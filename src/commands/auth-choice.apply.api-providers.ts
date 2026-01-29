@@ -613,6 +613,7 @@ export async function applyAuthChoiceApiProviders(
           ollama: {
             baseUrl,
             apiKey: "ollama",
+            models: [],
           },
         },
       },
