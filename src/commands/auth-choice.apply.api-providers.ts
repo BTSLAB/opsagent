@@ -579,5 +579,71 @@ export async function applyAuthChoiceApiProviders(
     return { config: nextConfig, agentModelOverride };
   }
 
+  if (authChoice === "ollama") {
+    await params.prompter.note(
+      [
+        "Ollama runs models locally — no API key required.",
+        "Make sure Ollama is installed and running: https://ollama.com",
+        "Default model: deepseek-r1:8b (pull with: ollama pull deepseek-r1:8b)",
+      ].join("\n"),
+      "Ollama",
+    );
+
+    const ollamaUrl = await params.prompter.text({
+      message: "Ollama base URL",
+      initialValue: "http://127.0.0.1:11434/v1",
+      validate: (value) => (value?.trim() ? undefined : "Required"),
+    });
+
+    const ollamaModel = await params.prompter.text({
+      message: "Default Ollama model",
+      initialValue: "deepseek-r1:8b",
+      validate: (value) => (value?.trim() ? undefined : "Required"),
+    });
+
+    const modelRef = `ollama/${String(ollamaModel).trim()}`;
+    const baseUrl = String(ollamaUrl).trim();
+
+    nextConfig = {
+      ...nextConfig,
+      models: {
+        ...nextConfig.models,
+        providers: {
+          ...nextConfig.models?.providers,
+          ollama: {
+            ...nextConfig.models?.providers?.["ollama"],
+            baseUrl,
+            apiKey: "ollama",
+          },
+        },
+      },
+    };
+
+    if (params.setDefaultModel) {
+      nextConfig = {
+        ...nextConfig,
+        agents: {
+          ...nextConfig.agents,
+          defaults: {
+            ...nextConfig.agents?.defaults,
+            model: {
+              ...nextConfig.agents?.defaults?.model,
+              primary: modelRef,
+            },
+          },
+        },
+      };
+      await params.prompter.note(
+        `Default model set to ${modelRef}`,
+        "Model configured",
+      );
+    } else {
+      agentModelOverride = modelRef;
+      await noteAgentModel(modelRef);
+    }
+
+    return { config: nextConfig, agentModelOverride };
+  }
+
   return null;
 }
