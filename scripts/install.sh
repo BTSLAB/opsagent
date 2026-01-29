@@ -210,7 +210,7 @@ install_git() {
     git -C "$target" pull --rebase
   else
     info "Cloning OpsAgent to $target..."
-    git clone "$REPO" "$target"
+    git clone --depth 1 "$REPO" "$target"
   fi
 
   cd "$target"
