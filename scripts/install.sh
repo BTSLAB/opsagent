@@ -245,6 +245,68 @@ install_git() {
   fi
 }
 
+# ── Install Ollama + default model ─────────────────────────────────────
+OLLAMA_MODEL="${OPSAGENT_MODEL:-deepseek-r1:8b}"
+
+install_ollama() {
+  if command_exists ollama; then
+    info "Ollama already installed: $(ollama --version 2>/dev/null || echo 'unknown')"
+  else
+    info "Installing Ollama..."
+    curl -fsSL https://ollama.com/install.sh | sh
+  fi
+
+  # Start Ollama in background if not already running
+  if ! curl -sf http://localhost:11434/api/tags >/dev/null 2>&1; then
+    info "Starting Ollama service..."
+    if command_exists systemctl && systemctl is-active --quiet ollama 2>/dev/null; then
+      verbose "Ollama systemd service already running"
+    else
+      nohup ollama serve >/dev/null 2>&1 &
+      sleep 2
+    fi
+  fi
+
+  # Pull the default model
+  info "Pulling model: $OLLAMA_MODEL (this may take a while)..."
+  ollama pull "$OLLAMA_MODEL"
+
+  ok "Ollama ready with $OLLAMA_MODEL"
+}
+
+configure_ollama() {
+  mkdir -p "$CONFIG_DIR"
+  local config_file="$CONFIG_DIR/opsagent.json"
+
+  if [[ -f "$config_file" ]]; then
+    verbose "Config file exists, skipping default config write"
+    return
+  fi
+
+  info "Writing default config → $config_file"
+  cat > "$config_file" <<CONF
+{
+  "models": {
+    "providers": {
+      "ollama": {
+        "baseUrl": "http://127.0.0.1:11434/v1",
+        "apiKey": "ollama"
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "ollama/$OLLAMA_MODEL"
+      }
+    }
+  }
+}
+CONF
+
+  ok "Configured OpsAgent to use Ollama ($OLLAMA_MODEL)"
+}
+
 # ── Post-install ───────────────────────────────────────────────────────
 post_install() {
   mkdir -p "$CONFIG_DIR"
@@ -259,6 +321,7 @@ post_install() {
     echo "  Version:  $installed_version"
   fi
   echo "  Config:   $CONFIG_DIR"
+  echo "  Model:    $OLLAMA_MODEL"
   echo ""
 
   printf "${BOLD}Quick start:${RESET}\n"
@@ -267,6 +330,10 @@ post_install() {
   echo "  opsagent gateway --port 18789       # Start the gateway"
   echo "  opsagent agent --message \"Hello\"     # Talk to the agent"
   echo "  opsagent status                     # Check health"
+  echo ""
+  printf "  ${BOLD}Change model:${RESET}\n"
+  echo "  ollama pull deepseek-r1:70b"
+  echo "  opsagent config set agents.defaults.model.primary \"ollama/deepseek-r1:70b\""
   echo ""
   printf "  Docs: ${CYAN}https://docs.opsagent.dev${RESET}\n"
   echo ""
@@ -288,6 +355,9 @@ main() {
     git) install_git ;;
     *)   err "Unknown install method: $METHOD"; exit 1 ;;
   esac
+
+  install_ollama
+  configure_ollama
 
   post_install
 }
