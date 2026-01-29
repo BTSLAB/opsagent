@@ -1,6 +1,12 @@
 import { ensureAuthProfileStore, resolveAuthProfileOrder } from "../agents/auth-profiles.js";
 import { resolveEnvApiKey } from "../agents/model-auth.js";
 import {
+  deriveOllamaApiBase,
+  fetchOllamaModels,
+  pullOllamaModel,
+  OLLAMA_CURATED_MODELS,
+} from "../agents/ollama-api.js";
+import {
   formatApiKeyPreview,
   normalizeApiKeyInput,
   validateApiKeyInput,
@@ -46,6 +52,74 @@ import {
   ZAI_DEFAULT_MODEL_REF,
 } from "./onboard-auth.js";
 import { OPENCODE_ZEN_DEFAULT_MODEL } from "./opencode-zen-model-default.js";
+import type { WizardPrompter } from "../wizard/prompts.js";
+
+async function ollamaPullFlow(
+  prompter: WizardPrompter,
+  apiBase: string,
+): Promise<string | undefined> {
+  const CUSTOM = "__custom__";
+  const choice = await prompter.select<string>({
+    message: "Choose a model to pull",
+    options: [
+      ...OLLAMA_CURATED_MODELS.map((m) => ({
+        value: m.value,
+        label: m.label,
+        hint: m.hint,
+      })),
+      {
+        value: CUSTOM,
+        label: "Enter a custom model name\u2026",
+        hint: "any model from the Ollama registry",
+      },
+    ],
+  });
+
+  let modelName: string;
+  if (choice === CUSTOM) {
+    const custom = await prompter.text({
+      message: "Model name (e.g. llama3.3:latest)",
+      validate: (value) => (value?.trim() ? undefined : "Required"),
+    });
+    modelName = String(custom).trim();
+  } else {
+    modelName = choice;
+  }
+
+  const spin = prompter.progress(`Pulling ${modelName}\u2026`);
+  const result = await pullOllamaModel(apiBase, modelName, (status) => {
+    spin.update(`Pulling ${modelName}: ${status}`);
+  });
+
+  if (result.ok) {
+    spin.stop(`Successfully pulled ${modelName}`);
+    return modelName;
+  } else {
+    spin.stop(`Failed to pull ${modelName}: ${result.error}`);
+    await prompter.note(
+      [
+        `Could not pull "${modelName}": ${result.error}`,
+        "You can try pulling it manually later with:",
+        `  ollama pull ${modelName}`,
+      ].join("\n"),
+      "Pull failed",
+    );
+
+    const useManual = await prompter.confirm({
+      message: "Enter a model name manually instead?",
+      initialValue: true,
+    });
+    if (useManual) {
+      const manual = await prompter.text({
+        message: "Default Ollama model",
+        initialValue: "deepseek-r1:8b",
+        validate: (value) => (value?.trim() ? undefined : "Required"),
+      });
+      return String(manual).trim();
+    }
+    return undefined;
+  }
+}
 
 export async function applyAuthChoiceApiProviders(
   params: ApplyAuthChoiceParams,
@@ -582,9 +656,8 @@ export async function applyAuthChoiceApiProviders(
   if (authChoice === "ollama") {
     await params.prompter.note(
       [
-        "Ollama runs models locally — no API key required.",
+        "Ollama runs models locally \u2014 no API key required.",
         "Make sure Ollama is installed and running: https://ollama.com",
-        "Default model: deepseek-r1:8b (pull with: ollama pull deepseek-r1:8b)",
       ].join("\n"),
       "Ollama",
     );
@@ -595,14 +668,78 @@ export async function applyAuthChoiceApiProviders(
       validate: (value) => (value?.trim() ? undefined : "Required"),
     });
 
-    const ollamaModel = await params.prompter.text({
-      message: "Default Ollama model",
-      initialValue: "deepseek-r1:8b",
-      validate: (value) => (value?.trim() ? undefined : "Required"),
-    });
-
-    const modelRef = `ollama/${String(ollamaModel).trim()}`;
     const baseUrl = String(ollamaUrl).trim();
+    const apiBase = deriveOllamaApiBase(baseUrl);
+
+    // Discover already-pulled models
+    const spin = params.prompter.progress("Checking for available models\u2026");
+    const pulledModels = await fetchOllamaModels(apiBase);
+    let selectedModelName: string | undefined;
+
+    if (pulledModels === null) {
+      // Ollama not reachable
+      spin.stop("Could not connect to Ollama");
+      await params.prompter.note(
+        [
+          "Could not reach Ollama at " + apiBase,
+          "Make sure Ollama is running, then enter a model name manually.",
+          "You can pull models later with: ollama pull <model>",
+        ].join("\n"),
+        "Connection failed",
+      );
+      const manualModel = await params.prompter.text({
+        message: "Default Ollama model",
+        initialValue: "deepseek-r1:8b",
+        validate: (value) => (value?.trim() ? undefined : "Required"),
+      });
+      selectedModelName = String(manualModel).trim();
+    } else if (pulledModels.length === 0) {
+      // No models pulled yet
+      spin.stop("No models found");
+      await params.prompter.note(
+        "No models are currently pulled. Let\u2019s pull one now.",
+        "No models available",
+      );
+      selectedModelName = await ollamaPullFlow(params.prompter, apiBase);
+    } else {
+      // Models available \u2014 let user pick
+      spin.stop(`Found ${pulledModels.length} model(s)`);
+
+      const PULL_NEW = "__pull_new__";
+      const modelChoice = await params.prompter.select<string>({
+        message: "Select an Ollama model",
+        options: [
+          ...pulledModels.map((m) => ({
+            value: m.name,
+            label: m.name,
+            hint: m.details?.parameter_size
+              ? `${m.details.parameter_size}${m.details.family ? ", " + m.details.family : ""}`
+              : undefined,
+          })),
+          {
+            value: PULL_NEW,
+            label: "Pull a new model\u2026",
+            hint: "download from Ollama registry",
+          },
+        ],
+      });
+
+      if (modelChoice === PULL_NEW) {
+        selectedModelName = await ollamaPullFlow(params.prompter, apiBase);
+      } else {
+        selectedModelName = modelChoice;
+      }
+    }
+
+    if (!selectedModelName) {
+      selectedModelName = "deepseek-r1:8b";
+      await params.prompter.note(
+        `Falling back to default model: ${selectedModelName}`,
+        "Default model",
+      );
+    }
+
+    const modelRef = `ollama/${selectedModelName}`;
 
     nextConfig = {
       ...nextConfig,
