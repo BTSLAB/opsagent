@@ -69,6 +69,7 @@ const LOBSTER_ASCII = [
   "█░░░█░█░░░░░░░░░█░░█░░░█░█░░░█░█░░░░░█░░█░░░█░░",
   "░████░█░░░░░████░░░█░░░█░░████░░█████░███░░░░█░░",
   "           AI Operations Assistant",
+  "  Created by Reginald Pierre — Business Technology Systems",
 ];
 
 export function formatCliBannerArt(options: BannerOptions = {}): string {
@@ -88,6 +89,9 @@ export function formatCliBannerArt(options: BannerOptions = {}): string {
         theme.muted("           ") +
         theme.info("AI Operations Assistant")
       );
+    }
+    if (line.includes("Created by")) {
+      return theme.muted(line);
     }
     return splitGraphemes(line).map(colorChar).join("");
   });

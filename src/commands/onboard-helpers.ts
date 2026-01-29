@@ -70,6 +70,7 @@ export function printWizardHeader(runtime: RuntimeEnv) {
     "█░░░█░█░░░░░░░░░█░░█░░░█░█░░░█░█░░░░░█░░█░░░█░░",
     "░████░█░░░░░████░░░█░░░█░░████░░█████░███░░░░█░░",
     "           AI Operations Assistant",
+    "  Created by Reginald Pierre — Business Technology Systems",
   ].join("\n");
   runtime.log(header);
 }
