@@ -24,7 +24,7 @@ CONFIG_DIR="${OPSAGENT_CONFIG_DIR:-$HOME/.opsagent}"
 # ── Defaults ───────────────────────────────────────────────────────────
 CHANNEL="latest"
 VERSION=""
-METHOD="npm"
+METHOD="git"
 VERBOSE=false
 UNINSTALL=false
 
@@ -194,7 +194,12 @@ install_npm() {
 # ── Install via git ────────────────────────────────────────────────────
 install_git() {
   if ! command_exists git; then
-    err "git is required for --install-method git"
+    err "git is not installed."
+    echo ""
+    echo "  Install git:  sudo apt install git   (Debian/Ubuntu)"
+    echo "                sudo dnf install git    (Fedora)"
+    echo "                brew install git        (macOS)"
+    echo ""
     exit 1
   fi
 
@@ -210,30 +215,33 @@ install_git() {
 
   cd "$target"
 
-  # Prefer pnpm, fall back to npm
-  if command_exists pnpm; then
-    info "Installing dependencies with pnpm..."
-    pnpm install
-    info "Building..."
-    pnpm build
-  else
-    warn "pnpm not found — using npm (pnpm recommended for dev)"
-    npm install
-    npm run build
+  # Enable corepack for pnpm
+  if ! command_exists pnpm; then
+    info "Enabling pnpm via corepack..."
+    if [[ "$(id -u)" -eq 0 ]]; then
+      corepack enable
+    else
+      sudo corepack enable
+    fi
   fi
 
+  info "Installing dependencies..."
+  pnpm install
+
+  info "Building..."
+  pnpm build
+
   # Symlink the binary
-  local bin_target
-  bin_target="$(npm bin -g 2>/dev/null || echo "/usr/local/bin")"
+  local bin_target="/usr/local/bin"
   local link_path="$bin_target/opsagent"
 
-  if [[ ! -L "$link_path" ]] || [[ "$(readlink "$link_path")" != "$target/dist/entry.js" ]]; then
-    info "Linking opsagent binary to $link_path..."
-    if [[ "$(id -u)" -eq 0 ]]; then
-      ln -sf "$target/dist/entry.js" "$link_path"
-    else
-      sudo ln -sf "$target/dist/entry.js" "$link_path"
-    fi
+  info "Linking opsagent → $link_path..."
+  if [[ "$(id -u)" -eq 0 ]]; then
+    ln -sf "$target/dist/entry.js" "$link_path"
+    chmod +x "$target/dist/entry.js"
+  else
+    sudo ln -sf "$target/dist/entry.js" "$link_path"
+    sudo chmod +x "$target/dist/entry.js"
   fi
 }
 
