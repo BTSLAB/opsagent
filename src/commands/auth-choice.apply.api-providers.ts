@@ -611,7 +611,6 @@ export async function applyAuthChoiceApiProviders(
         providers: {
           ...nextConfig.models?.providers,
           ollama: {
-            ...nextConfig.models?.providers?.["ollama"],
             baseUrl,
             apiKey: "ollama",
           },
