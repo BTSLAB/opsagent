@@ -223,25 +223,25 @@ describe("buildServiceEnvironment", () => {
     } else {
       expect(env.PATH).toContain("/usr/bin");
     }
-    expect(env.CLAWDBOT_GATEWAY_PORT).toBe("18789");
-    expect(env.CLAWDBOT_GATEWAY_TOKEN).toBe("secret");
-    expect(env.CLAWDBOT_SERVICE_MARKER).toBe("clawdbot");
-    expect(env.CLAWDBOT_SERVICE_KIND).toBe("gateway");
-    expect(typeof env.CLAWDBOT_SERVICE_VERSION).toBe("string");
-    expect(env.CLAWDBOT_SYSTEMD_UNIT).toBe("clawdbot-gateway.service");
+    expect(env.OPSAGENT_GATEWAY_PORT).toBe("18789");
+    expect(env.OPSAGENT_GATEWAY_TOKEN).toBe("secret");
+    expect(env.OPSAGENT_SERVICE_MARKER).toBe("opsagent");
+    expect(env.OPSAGENT_SERVICE_KIND).toBe("gateway");
+    expect(typeof env.OPSAGENT_SERVICE_VERSION).toBe("string");
+    expect(env.OPSAGENT_SYSTEMD_UNIT).toBe("opsagent-gateway.service");
     if (process.platform === "darwin") {
-      expect(env.CLAWDBOT_LAUNCHD_LABEL).toBe("com.clawdbot.gateway");
+      expect(env.OPSAGENT_LAUNCHD_LABEL).toBe("com.opsagent.gateway");
     }
   });
 
   it("uses profile-specific unit and label", () => {
     const env = buildServiceEnvironment({
-      env: { HOME: "/home/user", CLAWDBOT_PROFILE: "work" },
+      env: { HOME: "/home/user", OPSAGENT_PROFILE: "work" },
       port: 18789,
     });
-    expect(env.CLAWDBOT_SYSTEMD_UNIT).toBe("clawdbot-gateway-work.service");
+    expect(env.OPSAGENT_SYSTEMD_UNIT).toBe("opsagent-gateway-work.service");
     if (process.platform === "darwin") {
-      expect(env.CLAWDBOT_LAUNCHD_LABEL).toBe("com.clawdbot.work");
+      expect(env.OPSAGENT_LAUNCHD_LABEL).toBe("com.opsagent.work");
     }
   });
 });

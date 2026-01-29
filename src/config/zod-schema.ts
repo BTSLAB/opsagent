@@ -27,7 +27,7 @@ const NodeHostSchema = z
   .strict()
   .optional();
 
-export const ClawdbotSchema = z
+export const OpsAgentSchema = z
   .object({
     meta: z
       .object({

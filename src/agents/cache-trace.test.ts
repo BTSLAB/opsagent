@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { ClawdbotConfig } from "../config/config.js";
+import type { OpsAgentConfig } from "../config/config.js";
 import { resolveUserPath } from "../utils.js";
 import { createCacheTrace } from "./cache-trace.js";
 
 describe("createCacheTrace", () => {
   it("returns null when diagnostics cache tracing is disabled", () => {
     const trace = createCacheTrace({
-      cfg: {} as ClawdbotConfig,
+      cfg: {} as OpsAgentConfig,
       env: {},
     });
 
@@ -21,7 +21,7 @@ describe("createCacheTrace", () => {
         diagnostics: {
           cacheTrace: {
             enabled: true,
-            filePath: "~/.clawdbot/logs/cache-trace.jsonl",
+            filePath: "~/.opsagent/logs/cache-trace.jsonl",
           },
         },
       },
@@ -33,7 +33,7 @@ describe("createCacheTrace", () => {
     });
 
     expect(trace).not.toBeNull();
-    expect(trace?.filePath).toBe(resolveUserPath("~/.clawdbot/logs/cache-trace.jsonl"));
+    expect(trace?.filePath).toBe(resolveUserPath("~/.opsagent/logs/cache-trace.jsonl"));
 
     trace?.recordStage("session:loaded", {
       messages: [],
@@ -80,7 +80,7 @@ describe("createCacheTrace", () => {
         },
       },
       env: {
-        CLAWDBOT_CACHE_TRACE: "0",
+        OPSAGENT_CACHE_TRACE: "0",
       },
       writer: {
         filePath: "memory",

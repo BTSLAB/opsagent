@@ -6,7 +6,7 @@
 set -euo pipefail
 
 # Configuration
-SUBSYSTEM="com.clawdbot"
+SUBSYSTEM="com.opsagent"
 DEFAULT_LEVEL="info"
 
 # Colors for output
@@ -21,7 +21,7 @@ handle_sudo_error() {
     echo -e "\n${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${YELLOW}⚠️  Password Required for Log Access${NC}"
     echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
-    echo -e "clawlog needs to use sudo to show complete log data (Apple hides sensitive info by default)."
+    echo -e "opslog needs to use sudo to show complete log data (Apple hides sensitive info by default)."
     echo -e "\nTo avoid password prompts, configure passwordless sudo for the log command:"
     echo -e "See: ${BLUE}apple/docs/logging-private-fix.md${NC}\n"
     echo -e "Quick fix:"
@@ -48,17 +48,17 @@ SHOW_HELP=false
 # Function to show usage
 show_usage() {
     cat << EOF
-clawlog - Clawdbot Logging Utility
+opslog - OpsAgent Logging Utility
 
 USAGE:
-    clawlog [OPTIONS]
+    opslog [OPTIONS]
 
 DESCRIPTION:
-    View Clawdbot logs with full details (bypasses Apple's privacy redaction).
+    View OpsAgent logs with full details (bypasses Apple's privacy redaction).
     Requires sudo access configured for /usr/bin/log command.
 
 LOG FLOW ARCHITECTURE:
-    Clawdbot logs flow through the macOS unified log (subsystem: com.clawdbot).
+    OpsAgent logs flow through the macOS unified log (subsystem: com.opsagent).
 
 LOG CATEGORIES (examples):
     • voicewake           - Voice wake detection/test harness
@@ -69,10 +69,10 @@ LOG CATEGORIES (examples):
     • shell               - ShellExecutor
 
 QUICK START:
-    clawlog -n 100             Show last 100 lines from all components
-    clawlog -f                 Follow logs in real-time
-    clawlog -e                 Show only errors
-    clawlog -c ServerManager   Show logs from ServerManager only
+    opslog -n 100             Show last 100 lines from all components
+    opslog -f                 Follow logs in real-time
+    opslog -e                 Show only errors
+    opslog -c ServerManager   Show logs from ServerManager only
 
 OPTIONS:
     -h, --help              Show this help message
@@ -91,15 +91,15 @@ OPTIONS:
     --json                  Output in JSON format
 
 EXAMPLES:
-    clawlog                   Show last 50 lines from past 5 minutes (default)
-    clawlog -f                Stream logs continuously
-    clawlog -n 100            Show last 100 lines
-    clawlog -e                Show only recent errors
-    clawlog -l 30m -n 200     Show last 200 lines from past 30 minutes
-    clawlog -c ServerManager  Show recent ServerManager logs
-    clawlog -s "fail"         Search for "fail" in recent logs
-    clawlog --server -e       Show recent server errors
-    clawlog -f -d             Stream debug logs continuously
+    opslog                   Show last 50 lines from past 5 minutes (default)
+    opslog -f                Stream logs continuously
+    opslog -n 100            Show last 100 lines
+    opslog -e                Show only recent errors
+    opslog -l 30m -n 200     Show last 200 lines from past 30 minutes
+    opslog -c ServerManager  Show recent ServerManager logs
+    opslog -s "fail"         Search for "fail" in recent logs
+    opslog --server -e       Show recent server errors
+    opslog -f -d             Stream debug logs continuously
 
 CATEGORIES:
     Common categories include:
@@ -123,7 +123,7 @@ EOF
 
 # Function to list categories
 list_categories() {
-    echo -e "${BLUE}Fetching VibeTunnel log categories from the last hour...${NC}\n"
+    echo -e "${BLUE}Fetching OpsAgent log categories from the last hour...${NC}\n"
 
     # Get unique categories from recent logs
     log show --predicate "subsystem == \"$SUBSYSTEM\"" --last 1h 2>/dev/null | \
@@ -231,7 +231,7 @@ if [[ "$STREAM_MODE" == true ]]; then
     # Streaming mode
     CMD="sudo log stream --predicate '$PREDICATE' --level $LOG_LEVEL --info"
 
-    echo -e "${GREEN}Streaming VibeTunnel logs continuously...${NC}"
+    echo -e "${GREEN}Streaming OpsAgent logs continuously...${NC}"
     echo -e "${YELLOW}Press Ctrl+C to stop${NC}\n"
 else
     # Show mode

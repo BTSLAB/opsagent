@@ -15,30 +15,30 @@ type CommandOptions = Record<string, unknown>;
 
 const SANDBOX_EXAMPLES = {
   main: [
-    ["clawdbot sandbox list", "List all sandbox containers."],
-    ["clawdbot sandbox list --browser", "List only browser containers."],
-    ["clawdbot sandbox recreate --all", "Recreate all containers."],
-    ["clawdbot sandbox recreate --session main", "Recreate a specific session."],
-    ["clawdbot sandbox recreate --agent mybot", "Recreate agent containers."],
-    ["clawdbot sandbox explain", "Explain effective sandbox config."],
+    ["opsagent sandbox list", "List all sandbox containers."],
+    ["opsagent sandbox list --browser", "List only browser containers."],
+    ["opsagent sandbox recreate --all", "Recreate all containers."],
+    ["opsagent sandbox recreate --session main", "Recreate a specific session."],
+    ["opsagent sandbox recreate --agent mybot", "Recreate agent containers."],
+    ["opsagent sandbox explain", "Explain effective sandbox config."],
   ],
   list: [
-    ["clawdbot sandbox list", "List all sandbox containers."],
-    ["clawdbot sandbox list --browser", "List only browser containers."],
-    ["clawdbot sandbox list --json", "JSON output."],
+    ["opsagent sandbox list", "List all sandbox containers."],
+    ["opsagent sandbox list --browser", "List only browser containers."],
+    ["opsagent sandbox list --json", "JSON output."],
   ],
   recreate: [
-    ["clawdbot sandbox recreate --all", "Recreate all containers."],
-    ["clawdbot sandbox recreate --session main", "Recreate a specific session."],
-    ["clawdbot sandbox recreate --agent mybot", "Recreate a specific agent (includes sub-agents)."],
-    ["clawdbot sandbox recreate --browser --all", "Recreate only browser containers."],
-    ["clawdbot sandbox recreate --all --force", "Skip confirmation."],
+    ["opsagent sandbox recreate --all", "Recreate all containers."],
+    ["opsagent sandbox recreate --session main", "Recreate a specific session."],
+    ["opsagent sandbox recreate --agent mybot", "Recreate a specific agent (includes sub-agents)."],
+    ["opsagent sandbox recreate --browser --all", "Recreate only browser containers."],
+    ["opsagent sandbox recreate --all --force", "Skip confirmation."],
   ],
   explain: [
-    ["clawdbot sandbox explain", "Show effective sandbox config."],
-    ["clawdbot sandbox explain --session agent:main:main", "Explain a specific session."],
-    ["clawdbot sandbox explain --agent work", "Explain an agent sandbox."],
-    ["clawdbot sandbox explain --json", "JSON output."],
+    ["opsagent sandbox explain", "Show effective sandbox config."],
+    ["opsagent sandbox explain --session agent:main:main", "Explain a specific session."],
+    ["opsagent sandbox explain --agent work", "Explain an agent sandbox."],
+    ["opsagent sandbox explain --json", "JSON output."],
   ],
 } as const;
 
@@ -68,7 +68,7 @@ export function registerSandboxCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/sandbox", "docs.clawd.bot/cli/sandbox")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/sandbox", "docs.opsagent.dev/cli/sandbox")}\n`,
     )
     .action(() => {
       sandbox.help({ error: true });

@@ -183,7 +183,7 @@ async function findPackageRoot(candidates: string[]) {
       try {
         const raw = await fs.readFile(pkgPath, "utf-8");
         const parsed = JSON.parse(raw) as { name?: string };
-        if (parsed?.name === "clawdbot") return current;
+        if (parsed?.name === "opsagent") return current;
       } catch {
         // ignore
       }
@@ -277,7 +277,7 @@ function managerInstallArgs(manager: "pnpm" | "bun" | "npm") {
 function normalizeTag(tag?: string) {
   const trimmed = tag?.trim();
   if (!trimmed) return "latest";
-  return trimmed.startsWith("clawdbot@") ? trimmed.slice("clawdbot@".length) : trimmed;
+  return trimmed.startsWith("opsagent@") ? trimmed.slice("opsagent@".length) : trimmed;
 }
 
 export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<UpdateRunResult> {
@@ -329,7 +329,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       status: "error",
       mode: "unknown",
       root: gitRoot,
-      reason: "not-clawdbot-root",
+      reason: "not-opsagent-root",
       steps: [],
       durationMs: Date.now() - startedAt,
     };
@@ -484,7 +484,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
       }
 
       const manager = await detectPackageManager(gitRoot);
-      const preflightRoot = await fs.mkdtemp(path.join(os.tmpdir(), "clawdbot-update-preflight-"));
+      const preflightRoot = await fs.mkdtemp(path.join(os.tmpdir(), "opsagent-update-preflight-"));
       const worktreeDir = path.join(preflightRoot, "worktree");
       const worktreeStep = await runStep(
         step(
@@ -671,10 +671,10 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
 
     const doctorStep = await runStep(
       step(
-        "clawdbot doctor",
-        managerScriptArgs(manager, "clawdbot", ["doctor", "--non-interactive"]),
+        "opsagent doctor",
+        managerScriptArgs(manager, "opsagent", ["doctor", "--non-interactive"]),
         gitRoot,
-        { CLAWDBOT_UPDATE_IN_PROGRESS: "1" },
+        { OPSAGENT_UPDATE_IN_PROGRESS: "1" },
       ),
     );
     steps.push(doctorStep);
@@ -714,7 +714,7 @@ export async function runGatewayUpdate(opts: UpdateRunnerOptions = {}): Promise<
   const beforeVersion = await readPackageVersion(pkgRoot);
   const globalManager = await detectGlobalInstallManagerForRoot(runCommand, pkgRoot, timeoutMs);
   if (globalManager) {
-    const spec = `clawdbot@${normalizeTag(opts.tag)}`;
+    const spec = `opsagent@${normalizeTag(opts.tag)}`;
     const updateStep = await runStep({
       runCommand,
       name: "global update",

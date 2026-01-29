@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 const tempDirs: string[] = [];
 
 async function makeTempDir() {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "clawdbot-hooks-e2e-"));
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "opsagent-hooks-e2e-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -21,24 +21,24 @@ describe("hooks install (e2e)", () => {
     workspaceDir = path.join(baseDir, "workspace");
     await fs.mkdir(workspaceDir, { recursive: true });
 
-    prevStateDir = process.env.CLAWDBOT_STATE_DIR;
-    prevBundledDir = process.env.CLAWDBOT_BUNDLED_HOOKS_DIR;
-    process.env.CLAWDBOT_STATE_DIR = path.join(baseDir, "state");
-    process.env.CLAWDBOT_BUNDLED_HOOKS_DIR = path.join(baseDir, "bundled-none");
+    prevStateDir = process.env.OPSAGENT_STATE_DIR;
+    prevBundledDir = process.env.OPSAGENT_BUNDLED_HOOKS_DIR;
+    process.env.OPSAGENT_STATE_DIR = path.join(baseDir, "state");
+    process.env.OPSAGENT_BUNDLED_HOOKS_DIR = path.join(baseDir, "bundled-none");
     vi.resetModules();
   });
 
   afterEach(async () => {
     if (prevStateDir === undefined) {
-      delete process.env.CLAWDBOT_STATE_DIR;
+      delete process.env.OPSAGENT_STATE_DIR;
     } else {
-      process.env.CLAWDBOT_STATE_DIR = prevStateDir;
+      process.env.OPSAGENT_STATE_DIR = prevStateDir;
     }
 
     if (prevBundledDir === undefined) {
-      delete process.env.CLAWDBOT_BUNDLED_HOOKS_DIR;
+      delete process.env.OPSAGENT_BUNDLED_HOOKS_DIR;
     } else {
-      process.env.CLAWDBOT_BUNDLED_HOOKS_DIR = prevBundledDir;
+      process.env.OPSAGENT_BUNDLED_HOOKS_DIR = prevBundledDir;
     }
 
     vi.resetModules();
@@ -63,7 +63,7 @@ describe("hooks install (e2e)", () => {
         {
           name: "@acme/hello-hooks",
           version: "0.0.0",
-          clawdbot: { hooks: ["./hooks/hello-hook"] },
+          opsagent: { hooks: ["./hooks/hello-hook"] },
         },
         null,
         2,
@@ -77,7 +77,7 @@ describe("hooks install (e2e)", () => {
         "---",
         'name: "hello-hook"',
         'description: "Test hook"',
-        'metadata: {"clawdbot":{"events":["command:new"]}}',
+        'metadata: {"opsagent":{"events":["command:new"]}}',
         "---",
         "",
         "# Hello Hook",

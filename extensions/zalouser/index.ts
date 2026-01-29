@@ -1,5 +1,5 @@
-import type { ClawdbotPluginApi } from "clawdbot/plugin-sdk";
-import { emptyPluginConfigSchema } from "clawdbot/plugin-sdk";
+import type { OpsAgentPluginApi } from "opsagent/plugin-sdk";
+import { emptyPluginConfigSchema } from "opsagent/plugin-sdk";
 
 import { zalouserDock, zalouserPlugin } from "./src/channel.js";
 import { ZalouserToolSchema, executeZalouserTool } from "./src/tool.js";
@@ -10,7 +10,7 @@ const plugin = {
   name: "Zalo Personal",
   description: "Zalo personal account messaging via zca-cli",
   configSchema: emptyPluginConfigSchema(),
-  register(api: ClawdbotPluginApi) {
+  register(api: OpsAgentPluginApi) {
     setZalouserRuntime(api.runtime);
     // Register channel plugin (for onboarding & gateway)
     api.registerChannel({ plugin: zalouserPlugin, dock: zalouserDock });

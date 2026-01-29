@@ -1,14 +1,14 @@
 {
-  "name": "@clawdbot/memory-core",
+  "name": "@opsagent/memory-core",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot core memory search plugin",
-  "clawdbot": {
+  "description": "OpsAgent core memory search plugin",
+  "peerDependencies": {
+    "opsagent": ">=2026.1.25"
+  },
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]
-  },
-  "peerDependencies": {
-    "clawdbot": ">=2026.1.25"
   }
 }

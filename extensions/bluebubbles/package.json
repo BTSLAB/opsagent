@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/bluebubbles",
+  "name": "@opsagent/bluebubbles",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot BlueBubbles channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent BlueBubbles channel plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -25,7 +25,7 @@
       "order": 75
     },
     "install": {
-      "npmSpec": "@clawdbot/bluebubbles",
+      "npmSpec": "@opsagent/bluebubbles",
       "localPath": "extensions/bluebubbles",
       "defaultChoice": "npm"
     }

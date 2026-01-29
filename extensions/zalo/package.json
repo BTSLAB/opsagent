@@ -1,9 +1,13 @@
 {
-  "name": "@clawdbot/zalo",
+  "name": "@opsagent/zalo",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Zalo channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Zalo channel plugin",
+  "dependencies": {
+    "opsagent": "workspace:*",
+    "undici": "7.19.0"
+  },
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -21,13 +25,9 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@clawdbot/zalo",
+      "npmSpec": "@opsagent/zalo",
       "localPath": "extensions/zalo",
       "defaultChoice": "npm"
     }
-  },
-  "dependencies": {
-    "clawdbot": "workspace:*",
-    "undici": "7.19.0"
   }
 }

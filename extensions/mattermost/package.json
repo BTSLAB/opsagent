@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/mattermost",
+  "name": "@opsagent/mattermost",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Mattermost channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Mattermost channel plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -17,7 +17,7 @@
       "order": 65
     },
     "install": {
-      "npmSpec": "@clawdbot/mattermost",
+      "npmSpec": "@opsagent/mattermost",
       "localPath": "extensions/mattermost",
       "defaultChoice": "npm"
     }

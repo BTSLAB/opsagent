@@ -1,5 +1,5 @@
-import type { ClawdbotPluginApi } from "clawdbot/plugin-sdk";
-import { emptyPluginConfigSchema } from "clawdbot/plugin-sdk";
+import type { OpsAgentPluginApi } from "opsagent/plugin-sdk";
+import { emptyPluginConfigSchema } from "opsagent/plugin-sdk";
 
 import { linePlugin } from "./src/channel.js";
 import { registerLineCardCommand } from "./src/card-command.js";
@@ -10,7 +10,7 @@ const plugin = {
   name: "LINE",
   description: "LINE Messaging API channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: ClawdbotPluginApi) {
+  register(api: OpsAgentPluginApi) {
     setLineRuntime(api.runtime);
     api.registerChannel({ plugin: linePlugin });
     registerLineCardCommand(api);

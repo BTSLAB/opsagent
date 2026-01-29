@@ -1,0 +1,14 @@
+{
+  "name": "opsagent-skill-search-reddit",
+  "version": "1.0.0",
+  "description": "Real-time Reddit search for OpsAgent using OpenAI web_search",
+  "keywords": ["opsagent-skill", "reddit", "search", "openai", "web_search"],
+  "author": "Lobster",
+  "license": "MIT",
+  "bin": {
+    "search-reddit": "./scripts/search.js"
+  },
+  "scripts": {
+    "search": "node scripts/search.js"
+  }
+}

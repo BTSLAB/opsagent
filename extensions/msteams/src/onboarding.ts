@@ -1,16 +1,16 @@
 import type {
   ChannelOnboardingAdapter,
   ChannelOnboardingDmPolicy,
-  ClawdbotConfig,
+  OpsAgentConfig,
   DmPolicy,
   WizardPrompter,
-} from "clawdbot/plugin-sdk";
+} from "opsagent/plugin-sdk";
 import {
   addWildcardAllowFrom,
   DEFAULT_ACCOUNT_ID,
   formatDocsLink,
   promptChannelAccessConfig,
-} from "clawdbot/plugin-sdk";
+} from "opsagent/plugin-sdk";
 
 import { resolveMSTeamsCredentials } from "./token.js";
 import {
@@ -21,7 +21,7 @@ import {
 
 const channel = "msteams" as const;
 
-function setMSTeamsDmPolicy(cfg: ClawdbotConfig, dmPolicy: DmPolicy) {
+function setMSTeamsDmPolicy(cfg: OpsAgentConfig, dmPolicy: DmPolicy) {
   const allowFrom =
     dmPolicy === "open"
       ? addWildcardAllowFrom(cfg.channels?.msteams?.allowFrom)?.map((entry) => String(entry))
@@ -39,7 +39,7 @@ function setMSTeamsDmPolicy(cfg: ClawdbotConfig, dmPolicy: DmPolicy) {
   };
 }
 
-function setMSTeamsAllowFrom(cfg: ClawdbotConfig, allowFrom: string[]): ClawdbotConfig {
+function setMSTeamsAllowFrom(cfg: OpsAgentConfig, allowFrom: string[]): OpsAgentConfig {
   return {
     ...cfg,
     channels: {
@@ -64,9 +64,9 @@ function looksLikeGuid(value: string): boolean {
 }
 
 async function promptMSTeamsAllowFrom(params: {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   prompter: WizardPrompter;
-}): Promise<ClawdbotConfig> {
+}): Promise<OpsAgentConfig> {
   const existing = params.cfg.channels?.msteams?.allowFrom ?? [];
   await params.prompter.note(
     [
@@ -144,9 +144,9 @@ async function noteMSTeamsCredentialHelp(prompter: WizardPrompter): Promise<void
 }
 
 function setMSTeamsGroupPolicy(
-  cfg: ClawdbotConfig,
+  cfg: OpsAgentConfig,
   groupPolicy: "open" | "allowlist" | "disabled",
-): ClawdbotConfig {
+): OpsAgentConfig {
   return {
     ...cfg,
     channels: {
@@ -161,9 +161,9 @@ function setMSTeamsGroupPolicy(
 }
 
 function setMSTeamsTeamsAllowlist(
-  cfg: ClawdbotConfig,
+  cfg: OpsAgentConfig,
   entries: Array<{ teamKey: string; channelKey?: string }>,
-): ClawdbotConfig {
+): OpsAgentConfig {
   const baseTeams = cfg.channels?.msteams?.teams ?? {};
   const teams: Record<string, { channels?: Record<string, unknown> }> = { ...baseTeams };
   for (const entry of entries) {

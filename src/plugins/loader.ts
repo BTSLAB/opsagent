@@ -3,11 +3,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createJiti } from "jiti";
 
-import type { ClawdbotConfig } from "../config/config.js";
+import type { OpsAgentConfig } from "../config/config.js";
 import type { GatewayRequestHandler } from "../gateway/server-methods/types.js";
 import { createSubsystemLogger } from "../logging/subsystem.js";
 import { resolveUserPath } from "../utils.js";
-import { discoverClawdbotPlugins } from "./discovery.js";
+import { discoverOpsAgentPlugins } from "./discovery.js";
 import { loadPluginManifestRegistry } from "./manifest-registry.js";
 import {
   normalizePluginsConfig,
@@ -22,8 +22,8 @@ import { createPluginRuntime } from "./runtime/index.js";
 import { setActivePluginRegistry } from "./runtime.js";
 import { validateJsonSchemaValue } from "./schema-validator.js";
 import type {
-  ClawdbotPluginDefinition,
-  ClawdbotPluginModule,
+  OpsAgentPluginDefinition,
+  OpsAgentPluginModule,
   PluginDiagnostic,
   PluginLogger,
 } from "./types.js";
@@ -31,7 +31,7 @@ import type {
 export type PluginLoadResult = PluginRegistry;
 
 export type PluginLoadOptions = {
-  config?: ClawdbotConfig;
+  config?: OpsAgentConfig;
   workspaceDir?: string;
   logger?: PluginLogger;
   coreGatewayHandlers?: Record<string, GatewayRequestHandler>;
@@ -98,8 +98,8 @@ function validatePluginConfig(params: {
 }
 
 function resolvePluginModuleExport(moduleExport: unknown): {
-  definition?: ClawdbotPluginDefinition;
-  register?: ClawdbotPluginDefinition["register"];
+  definition?: OpsAgentPluginDefinition;
+  register?: OpsAgentPluginDefinition["register"];
 } {
   const resolved =
     moduleExport &&
@@ -109,11 +109,11 @@ function resolvePluginModuleExport(moduleExport: unknown): {
       : moduleExport;
   if (typeof resolved === "function") {
     return {
-      register: resolved as ClawdbotPluginDefinition["register"],
+      register: resolved as OpsAgentPluginDefinition["register"],
     };
   }
   if (resolved && typeof resolved === "object") {
-    const def = resolved as ClawdbotPluginDefinition;
+    const def = resolved as OpsAgentPluginDefinition;
     const register = def.register ?? def.activate;
     return { definition: def, register };
   }
@@ -161,7 +161,7 @@ function pushDiagnostics(diagnostics: PluginDiagnostic[], append: PluginDiagnost
   diagnostics.push(...append);
 }
 
-export function loadClawdbotPlugins(options: PluginLoadOptions = {}): PluginRegistry {
+export function loadOpsAgentPlugins(options: PluginLoadOptions = {}): PluginRegistry {
   const cfg = options.config ?? {};
   const logger = options.logger ?? defaultLogger();
   const validateOnly = options.mode === "validate";
@@ -189,7 +189,7 @@ export function loadClawdbotPlugins(options: PluginLoadOptions = {}): PluginRegi
     coreGatewayHandlers: options.coreGatewayHandlers as Record<string, GatewayRequestHandler>,
   });
 
-  const discovery = discoverClawdbotPlugins({
+  const discovery = discoverOpsAgentPlugins({
     workspaceDir: options.workspaceDir,
     extraPaths: normalized.loadPaths,
   });
@@ -206,7 +206,7 @@ export function loadClawdbotPlugins(options: PluginLoadOptions = {}): PluginRegi
   const jiti = createJiti(import.meta.url, {
     interopDefault: true,
     extensions: [".ts", ".tsx", ".mts", ".cts", ".mtsx", ".ctsx", ".js", ".mjs", ".cjs", ".json"],
-    ...(pluginSdkAlias ? { alias: { "clawdbot/plugin-sdk": pluginSdkAlias } } : {}),
+    ...(pluginSdkAlias ? { alias: { "opsagent/plugin-sdk": pluginSdkAlias } } : {}),
   });
 
   const manifestByRoot = new Map(
@@ -282,9 +282,9 @@ export function loadClawdbotPlugins(options: PluginLoadOptions = {}): PluginRegi
       continue;
     }
 
-    let mod: ClawdbotPluginModule | null = null;
+    let mod: OpsAgentPluginModule | null = null;
     try {
-      mod = jiti(candidate.source) as ClawdbotPluginModule;
+      mod = jiti(candidate.source) as OpsAgentPluginModule;
     } catch (err) {
       logger.error(`[plugins] ${record.id} failed to load from ${record.source}: ${String(err)}`);
       record.status = "error";

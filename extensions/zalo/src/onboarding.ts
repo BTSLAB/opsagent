@@ -1,15 +1,15 @@
 import type {
   ChannelOnboardingAdapter,
   ChannelOnboardingDmPolicy,
-  ClawdbotConfig,
+  OpsAgentConfig,
   WizardPrompter,
-} from "clawdbot/plugin-sdk";
+} from "opsagent/plugin-sdk";
 import {
   addWildcardAllowFrom,
   DEFAULT_ACCOUNT_ID,
   normalizeAccountId,
   promptAccountId,
-} from "clawdbot/plugin-sdk";
+} from "opsagent/plugin-sdk";
 
 import {
   listZaloAccountIds,
@@ -22,7 +22,7 @@ const channel = "zalo" as const;
 type UpdateMode = "polling" | "webhook";
 
 function setZaloDmPolicy(
-  cfg: ClawdbotConfig,
+  cfg: OpsAgentConfig,
   dmPolicy: "pairing" | "allowlist" | "open" | "disabled",
 ) {
   const allowFrom = dmPolicy === "open" ? addWildcardAllowFrom(cfg.channels?.zalo?.allowFrom) : undefined;
@@ -36,17 +36,17 @@ function setZaloDmPolicy(
         ...(allowFrom ? { allowFrom } : {}),
       },
     },
-  } as ClawdbotConfig;
+  } as OpsAgentConfig;
 }
 
 function setZaloUpdateMode(
-  cfg: ClawdbotConfig,
+  cfg: OpsAgentConfig,
   accountId: string,
   mode: UpdateMode,
   webhookUrl?: string,
   webhookSecret?: string,
   webhookPath?: string,
-): ClawdbotConfig {
+): OpsAgentConfig {
   const isDefault = accountId === DEFAULT_ACCOUNT_ID;
   if (mode === "polling") {
     if (isDefault) {
@@ -62,7 +62,7 @@ function setZaloUpdateMode(
           ...cfg.channels,
           zalo: rest,
         },
-      } as ClawdbotConfig;
+      } as OpsAgentConfig;
     }
     const accounts = { ...(cfg.channels?.zalo?.accounts ?? {}) } as Record<
       string,
@@ -85,7 +85,7 @@ function setZaloUpdateMode(
           accounts,
         },
       },
-    } as ClawdbotConfig;
+    } as OpsAgentConfig;
   }
 
   if (isDefault) {
@@ -100,7 +100,7 @@ function setZaloUpdateMode(
           webhookPath,
         },
       },
-    } as ClawdbotConfig;
+    } as OpsAgentConfig;
   }
 
   const accounts = { ...(cfg.channels?.zalo?.accounts ?? {}) } as Record<
@@ -122,7 +122,7 @@ function setZaloUpdateMode(
         accounts,
       },
     },
-  } as ClawdbotConfig;
+  } as OpsAgentConfig;
 }
 
 async function noteZaloTokenHelp(prompter: WizardPrompter): Promise<void> {
@@ -132,17 +132,17 @@ async function noteZaloTokenHelp(prompter: WizardPrompter): Promise<void> {
       "2) Create a bot and get the token",
       "3) Token looks like 12345689:abc-xyz",
       "Tip: you can also set ZALO_BOT_TOKEN in your env.",
-      "Docs: https://docs.clawd.bot/channels/zalo",
+      "Docs: https://docs.opsagent.dev/channels/zalo",
     ].join("\n"),
     "Zalo bot token",
   );
 }
 
 async function promptZaloAllowFrom(params: {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   prompter: WizardPrompter;
   accountId: string;
-}): Promise<ClawdbotConfig> {
+}): Promise<OpsAgentConfig> {
   const { cfg, prompter, accountId } = params;
   const resolved = resolveZaloAccount({ cfg, accountId });
   const existingAllowFrom = resolved.config.allowFrom ?? [];
@@ -176,7 +176,7 @@ async function promptZaloAllowFrom(params: {
           allowFrom: unique,
         },
       },
-    } as ClawdbotConfig;
+    } as OpsAgentConfig;
   }
 
   return {
@@ -197,7 +197,7 @@ async function promptZaloAllowFrom(params: {
         },
       },
     },
-  } as ClawdbotConfig;
+  } as OpsAgentConfig;
 }
 
 const dmPolicy: ChannelOnboardingDmPolicy = {
@@ -206,14 +206,14 @@ const dmPolicy: ChannelOnboardingDmPolicy = {
   policyKey: "channels.zalo.dmPolicy",
   allowFromKey: "channels.zalo.allowFrom",
   getCurrent: (cfg) => (cfg.channels?.zalo?.dmPolicy ?? "pairing") as "pairing",
-  setPolicy: (cfg, policy) => setZaloDmPolicy(cfg as ClawdbotConfig, policy),
+  setPolicy: (cfg, policy) => setZaloDmPolicy(cfg as OpsAgentConfig, policy),
   promptAllowFrom: async ({ cfg, prompter, accountId }) => {
     const id =
       accountId && normalizeAccountId(accountId)
         ? normalizeAccountId(accountId) ?? DEFAULT_ACCOUNT_ID
-        : resolveDefaultZaloAccountId(cfg as ClawdbotConfig);
+        : resolveDefaultZaloAccountId(cfg as OpsAgentConfig);
     return promptZaloAllowFrom({
-      cfg: cfg as ClawdbotConfig,
+      cfg: cfg as OpsAgentConfig,
       prompter,
       accountId: id,
     });
@@ -224,8 +224,8 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
   channel,
   dmPolicy,
   getStatus: async ({ cfg }) => {
-    const configured = listZaloAccountIds(cfg as ClawdbotConfig).some((accountId) =>
-      Boolean(resolveZaloAccount({ cfg: cfg as ClawdbotConfig, accountId }).token),
+    const configured = listZaloAccountIds(cfg as OpsAgentConfig).some((accountId) =>
+      Boolean(resolveZaloAccount({ cfg: cfg as OpsAgentConfig, accountId }).token),
     );
     return {
       channel,
@@ -237,13 +237,13 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
   },
   configure: async ({ cfg, prompter, accountOverrides, shouldPromptAccountIds, forceAllowFrom }) => {
     const zaloOverride = accountOverrides.zalo?.trim();
-    const defaultZaloAccountId = resolveDefaultZaloAccountId(cfg as ClawdbotConfig);
+    const defaultZaloAccountId = resolveDefaultZaloAccountId(cfg as OpsAgentConfig);
     let zaloAccountId = zaloOverride
       ? normalizeAccountId(zaloOverride)
       : defaultZaloAccountId;
     if (shouldPromptAccountIds && !zaloOverride) {
       zaloAccountId = await promptAccountId({
-        cfg: cfg as ClawdbotConfig,
+        cfg: cfg as OpsAgentConfig,
         prompter,
         label: "Zalo",
         currentId: zaloAccountId,
@@ -252,7 +252,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
       });
     }
 
-    let next = cfg as ClawdbotConfig;
+    let next = cfg as OpsAgentConfig;
     const resolvedAccount = resolveZaloAccount({ cfg: next, accountId: zaloAccountId });
     const accountConfigured = Boolean(resolvedAccount.token);
     const allowEnv = zaloAccountId === DEFAULT_ACCOUNT_ID;
@@ -280,7 +280,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
               enabled: true,
             },
           },
-        } as ClawdbotConfig;
+        } as OpsAgentConfig;
       } else {
         token = String(
           await prompter.text({
@@ -323,7 +323,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
               botToken: token,
             },
           },
-        } as ClawdbotConfig;
+        } as OpsAgentConfig;
       } else {
         next = {
           ...next,
@@ -342,7 +342,7 @@ export const zaloOnboardingAdapter: ChannelOnboardingAdapter = {
               },
             },
           },
-        } as ClawdbotConfig;
+        } as OpsAgentConfig;
       }
     }
 

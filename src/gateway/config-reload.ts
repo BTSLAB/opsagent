@@ -1,7 +1,7 @@
 import chokidar from "chokidar";
 import { type ChannelId, listChannelPlugins } from "../channels/plugins/index.js";
 import { getActivePluginRegistry } from "../plugins/runtime.js";
-import type { ClawdbotConfig, ConfigFileSnapshot, GatewayReloadMode } from "../config/config.js";
+import type { OpsAgentConfig, ConfigFileSnapshot, GatewayReloadMode } from "../config/config.js";
 
 export type GatewayReloadSettings = {
   mode: GatewayReloadMode;
@@ -156,7 +156,7 @@ export function diffConfigPaths(prev: unknown, next: unknown, prefix = ""): stri
   return [prefix || "<root>"];
 }
 
-export function resolveGatewayReloadSettings(cfg: ClawdbotConfig): GatewayReloadSettings {
+export function resolveGatewayReloadSettings(cfg: OpsAgentConfig): GatewayReloadSettings {
   const rawMode = cfg.gateway?.reload?.mode;
   const mode =
     rawMode === "off" || rawMode === "restart" || rawMode === "hot" || rawMode === "hybrid"
@@ -246,10 +246,10 @@ export type GatewayConfigReloader = {
 };
 
 export function startGatewayConfigReloader(opts: {
-  initialConfig: ClawdbotConfig;
+  initialConfig: OpsAgentConfig;
   readSnapshot: () => Promise<ConfigFileSnapshot>;
-  onHotReload: (plan: GatewayReloadPlan, nextConfig: ClawdbotConfig) => Promise<void>;
-  onRestart: (plan: GatewayReloadPlan, nextConfig: ClawdbotConfig) => void;
+  onHotReload: (plan: GatewayReloadPlan, nextConfig: OpsAgentConfig) => Promise<void>;
+  onRestart: (plan: GatewayReloadPlan, nextConfig: OpsAgentConfig) => void;
   log: {
     info: (msg: string) => void;
     warn: (msg: string) => void;

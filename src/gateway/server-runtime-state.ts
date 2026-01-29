@@ -22,7 +22,7 @@ import type { PluginRegistry } from "../plugins/registry.js";
 import type { GatewayTlsRuntime } from "./server/tls.js";
 
 export async function createGatewayRuntimeState(params: {
-  cfg: import("../config/config.js").ClawdbotConfig;
+  cfg: import("../config/config.js").OpsAgentConfig;
   bindHost: string;
   port: number;
   controlUiEnabled: boolean;

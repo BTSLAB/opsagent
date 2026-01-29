@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/discord",
+  "name": "@opsagent/discord",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Discord channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Discord channel plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]

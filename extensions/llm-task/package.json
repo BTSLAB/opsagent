@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/llm-task",
+  "name": "@opsagent/llm-task",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot JSON-only LLM task plugin",
-  "clawdbot": {
+  "description": "OpsAgent JSON-only LLM task plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]

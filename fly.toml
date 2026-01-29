@@ -1,7 +1,7 @@
-# Clawdbot Fly.io deployment configuration
+# OpsAgent Fly.io deployment configuration
 # See https://fly.io/docs/reference/configuration/
 
-app = "clawdbot"
+app = "opsagent"
 primary_region = "iad"  # change to your closest region
 
 [build]
@@ -9,9 +9,8 @@ primary_region = "iad"  # change to your closest region
 
 [env]
   NODE_ENV = "production"
-  # Fly uses x86, but keep this for consistency
-  CLAWDBOT_PREFER_PNPM = "1"
-  CLAWDBOT_STATE_DIR = "/data"
+  OPSAGENT_PREFER_PNPM = "1"
+  OPSAGENT_STATE_DIR = "/data"
   NODE_OPTIONS = "--max-old-space-size=1536"
 
 [processes]
@@ -30,5 +29,5 @@ primary_region = "iad"  # change to your closest region
   memory = "2048mb"
 
 [mounts]
-  source = "clawdbot_data"
+  source = "opsagent_data"
   destination = "/data"

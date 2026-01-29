@@ -21,7 +21,7 @@ export function registerBrowserCli(program: Command) {
   const browser = program
     .command("browser")
     .description("Manage clawd's dedicated browser (Chrome/Chromium)")
-    .option("--url <url>", "Override browser control URL (default from ~/.clawdbot/clawdbot.json)")
+    .option("--url <url>", "Override browser control URL (default from ~/.opsagent/opsagent.json)")
     .option("--browser-profile <name>", "Browser profile name (default from config)")
     .option("--json", "Output machine-readable JSON", false)
     .addHelpText(
@@ -32,13 +32,13 @@ export function registerBrowserCli(program: Command) {
           true,
         )}\n\n${theme.muted("Docs:")} ${formatDocsLink(
           "/cli/browser",
-          "docs.clawd.bot/cli/browser",
+          "docs.opsagent.dev/cli/browser",
         )}\n`,
     )
     .action(() => {
       browser.outputHelp();
       defaultRuntime.error(
-        danger(`Missing subcommand. Try: "${formatCliCommand("clawdbot browser status")}"`),
+        danger(`Missing subcommand. Try: "${formatCliCommand("opsagent browser status")}"`),
       );
       defaultRuntime.exit(1);
     });

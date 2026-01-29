@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { discoverClawdbotPlugins } from "../../plugins/discovery.js";
+import { discoverOpsAgentPlugins } from "../../plugins/discovery.js";
 import type { PluginOrigin } from "../../plugins/types.js";
-import type { ClawdbotPackageManifest } from "../../plugins/manifest.js";
+import type { OpsAgentPackageManifest } from "../../plugins/manifest.js";
 import { CONFIG_DIR, resolveUserPath } from "../../utils.js";
 import type { ChannelMeta } from "./types.js";
 
@@ -49,7 +49,7 @@ type ExternalCatalogEntry = {
   name?: string;
   version?: string;
   description?: string;
-  clawdbot?: ClawdbotPackageManifest;
+  opsagent?: OpsAgentPackageManifest;
 };
 
 const DEFAULT_CATALOG_PATHS = [
@@ -58,7 +58,7 @@ const DEFAULT_CATALOG_PATHS = [
   path.join(CONFIG_DIR, "plugins", "catalog.json"),
 ];
 
-const ENV_CATALOG_PATHS = ["CLAWDBOT_PLUGIN_CATALOG_PATHS", "CLAWDBOT_MPM_CATALOG_PATHS"];
+const ENV_CATALOG_PATHS = ["OPSAGENT_PLUGIN_CATALOG_PATHS", "OPSAGENT_MPM_CATALOG_PATHS"];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value && typeof value === "object" && !Array.isArray(value));
@@ -114,7 +114,7 @@ function loadExternalCatalogEntries(options: CatalogOptions): ExternalCatalogEnt
 }
 
 function toChannelMeta(params: {
-  channel: NonNullable<ClawdbotPackageManifest["channel"]>;
+  channel: NonNullable<OpsAgentPackageManifest["channel"]>;
   id: string;
 }): ChannelMeta | null {
   const label = params.channel.label?.trim();
@@ -162,7 +162,7 @@ function toChannelMeta(params: {
 }
 
 function resolveInstallInfo(params: {
-  manifest: ClawdbotPackageManifest;
+  manifest: OpsAgentPackageManifest;
   packageName?: string;
   packageDir?: string;
   workspaceDir?: string;
@@ -185,9 +185,9 @@ function buildCatalogEntry(candidate: {
   packageName?: string;
   packageDir?: string;
   workspaceDir?: string;
-  packageClawdbot?: ClawdbotPackageManifest;
+  packageOpsAgent?: OpsAgentPackageManifest;
 }): ChannelPluginCatalogEntry | null {
-  const manifest = candidate.packageClawdbot;
+  const manifest = candidate.packageOpsAgent;
   if (!manifest?.channel) return null;
   const id = manifest.channel.id?.trim();
   if (!id) return null;
@@ -206,7 +206,7 @@ function buildCatalogEntry(candidate: {
 function buildExternalCatalogEntry(entry: ExternalCatalogEntry): ChannelPluginCatalogEntry | null {
   return buildCatalogEntry({
     packageName: entry.name,
-    packageClawdbot: entry.clawdbot,
+    packageOpsAgent: entry.opsagent,
   });
 }
 
@@ -241,7 +241,7 @@ export function buildChannelUiCatalog(
 export function listChannelPluginCatalogEntries(
   options: CatalogOptions = {},
 ): ChannelPluginCatalogEntry[] {
-  const discovery = discoverClawdbotPlugins({ workspaceDir: options.workspaceDir });
+  const discovery = discoverOpsAgentPlugins({ workspaceDir: options.workspaceDir });
   const resolved = new Map<string, { entry: ChannelPluginCatalogEntry; priority: number }>();
 
   for (const candidate of discovery.candidates) {

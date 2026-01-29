@@ -173,7 +173,7 @@ async function loadValidConfig() {
   for (const issue of snapshot.issues) {
     defaultRuntime.error(`- ${issue.path || "<root>"}: ${issue.message}`);
   }
-  defaultRuntime.error(`Run \`${formatCliCommand("clawdbot doctor")}\` to repair, then retry.`);
+  defaultRuntime.error(`Run \`${formatCliCommand("opsagent doctor")}\` to repair, then retry.`);
   defaultRuntime.exit(1);
   return snapshot;
 }
@@ -185,7 +185,7 @@ export function registerConfigCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/config", "docs.clawd.bot/cli/config")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/config", "docs.opsagent.dev/cli/config")}\n`,
     )
     .option(
       "--section <section>",

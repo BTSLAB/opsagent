@@ -1,4 +1,4 @@
-import type { ClawdbotConfig } from "../../config/config.js";
+import type { OpsAgentConfig } from "../../config/config.js";
 import type { DmPolicy } from "../../config/types.js";
 import type { RuntimeEnv } from "../../runtime.js";
 import type { WizardPrompter } from "../../wizard/prompts.js";
@@ -23,11 +23,11 @@ export type SetupChannelsOptions = {
 };
 
 export type PromptAccountIdParams = {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   prompter: WizardPrompter;
   label: string;
   currentId?: string;
-  listAccountIds: (cfg: ClawdbotConfig) => string[];
+  listAccountIds: (cfg: OpsAgentConfig) => string[];
   defaultAccountId: string;
 };
 
@@ -42,13 +42,13 @@ export type ChannelOnboardingStatus = {
 };
 
 export type ChannelOnboardingStatusContext = {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   options?: SetupChannelsOptions;
   accountOverrides: Partial<Record<ChannelId, string>>;
 };
 
 export type ChannelOnboardingConfigureContext = {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   runtime: RuntimeEnv;
   prompter: WizardPrompter;
   options?: SetupChannelsOptions;
@@ -58,7 +58,7 @@ export type ChannelOnboardingConfigureContext = {
 };
 
 export type ChannelOnboardingResult = {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   accountId?: string;
 };
 
@@ -67,13 +67,13 @@ export type ChannelOnboardingDmPolicy = {
   channel: ChannelId;
   policyKey: string;
   allowFromKey: string;
-  getCurrent: (cfg: ClawdbotConfig) => DmPolicy;
-  setPolicy: (cfg: ClawdbotConfig, policy: DmPolicy) => ClawdbotConfig;
+  getCurrent: (cfg: OpsAgentConfig) => DmPolicy;
+  setPolicy: (cfg: OpsAgentConfig, policy: DmPolicy) => OpsAgentConfig;
   promptAllowFrom?: (params: {
-    cfg: ClawdbotConfig;
+    cfg: OpsAgentConfig;
     prompter: WizardPrompter;
     accountId?: string;
-  }) => Promise<ClawdbotConfig>;
+  }) => Promise<OpsAgentConfig>;
 };
 
 export type ChannelOnboardingAdapter = {
@@ -82,5 +82,5 @@ export type ChannelOnboardingAdapter = {
   configure: (ctx: ChannelOnboardingConfigureContext) => Promise<ChannelOnboardingResult>;
   dmPolicy?: ChannelOnboardingDmPolicy;
   onAccountRecorded?: (accountId: string, options?: SetupChannelsOptions) => void;
-  disable?: (cfg: ClawdbotConfig) => ClawdbotConfig;
+  disable?: (cfg: OpsAgentConfig) => OpsAgentConfig;
 };

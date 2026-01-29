@@ -1,6 +1,6 @@
-import type { ClawdbotConfig } from "./types.js";
+import type { OpsAgentConfig } from "./types.js";
 
-export function collectConfigEnvVars(cfg?: ClawdbotConfig): Record<string, string> {
+export function collectConfigEnvVars(cfg?: OpsAgentConfig): Record<string, string> {
   const envConfig = cfg?.env;
   if (!envConfig) return {};
 

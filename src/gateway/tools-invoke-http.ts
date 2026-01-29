@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
-import { createClawdbotTools } from "../agents/clawdbot-tools.js";
+import { createOpsAgentTools } from "../agents/opsagent-tools.js";
 import {
   filterToolsByPolicy,
   resolveEffectiveToolPolicy,
@@ -118,9 +118,9 @@ export async function handleToolsInvokeHttpRequest(
 
   // Resolve message channel/account hints (optional headers) for policy inheritance.
   const messageChannel = normalizeMessageChannel(
-    getHeader(req, "x-clawdbot-message-channel") ?? "",
+    getHeader(req, "x-opsagent-message-channel") ?? "",
   );
-  const accountId = getHeader(req, "x-clawdbot-account-id")?.trim() || undefined;
+  const accountId = getHeader(req, "x-opsagent-account-id")?.trim() || undefined;
 
   const {
     agentId,
@@ -144,7 +144,7 @@ export async function handleToolsInvokeHttpRequest(
     : undefined;
 
   // Build tool list (core + plugin tools).
-  const allTools = createClawdbotTools({
+  const allTools = createOpsAgentTools({
     agentSessionKey: sessionKey,
     agentChannel: messageChannel ?? undefined,
     agentAccountId: accountId,

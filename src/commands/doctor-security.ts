@@ -1,16 +1,16 @@
 import { resolveChannelDefaultAccountId } from "../channels/plugins/helpers.js";
 import { listChannelPlugins } from "../channels/plugins/index.js";
 import type { ChannelId } from "../channels/plugins/types.js";
-import type { ClawdbotConfig, GatewayBindMode } from "../config/config.js";
+import type { OpsAgentConfig, GatewayBindMode } from "../config/config.js";
 import { readChannelAllowFromStore } from "../pairing/pairing-store.js";
 import { note } from "../terminal/note.js";
 import { formatCliCommand } from "../cli/command-format.js";
 import { resolveGatewayAuth } from "../gateway/auth.js";
 import { isLoopbackHost, resolveGatewayBindHost } from "../gateway/net.js";
 
-export async function noteSecurityWarnings(cfg: ClawdbotConfig) {
+export async function noteSecurityWarnings(cfg: OpsAgentConfig) {
   const warnings: string[] = [];
-  const auditHint = `- Run: ${formatCliCommand("clawdbot security audit --deep")}`;
+  const auditHint = `- Run: ${formatCliCommand("opsagent security audit --deep")}`;
 
   // ===========================================
   // GATEWAY NETWORK EXPOSURE CHECK
@@ -48,19 +48,19 @@ export async function noteSecurityWarnings(cfg: ClawdbotConfig) {
       const authFixLines =
         resolvedAuth.mode === "password"
           ? [
-              `  Fix: ${formatCliCommand("clawdbot configure")} to set a password`,
-              `  Or switch to token: ${formatCliCommand("clawdbot config set gateway.auth.mode token")}`,
+              `  Fix: ${formatCliCommand("opsagent configure")} to set a password`,
+              `  Or switch to token: ${formatCliCommand("opsagent config set gateway.auth.mode token")}`,
             ]
           : [
-              `  Fix: ${formatCliCommand("clawdbot doctor --fix")} to generate a token`,
+              `  Fix: ${formatCliCommand("opsagent doctor --fix")} to generate a token`,
               `  Or set token directly: ${formatCliCommand(
-                "clawdbot config set gateway.auth.mode token",
+                "opsagent config set gateway.auth.mode token",
               )}`,
             ];
       warnings.push(
         `- CRITICAL: Gateway bound to ${bindDescriptor} without authentication.`,
         `  Anyone on your network (or internet if port-forwarded) can fully control your agent.`,
-        `  Fix: ${formatCliCommand("clawdbot config set gateway.bind loopback")}`,
+        `  Fix: ${formatCliCommand("opsagent config set gateway.bind loopback")}`,
         ...authFixLines,
       );
     } else {

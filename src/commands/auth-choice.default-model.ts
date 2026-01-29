@@ -1,16 +1,16 @@
-import type { ClawdbotConfig } from "../config/config.js";
+import type { OpsAgentConfig } from "../config/config.js";
 import type { WizardPrompter } from "../wizard/prompts.js";
 
 export async function applyDefaultModelChoice(params: {
-  config: ClawdbotConfig;
+  config: OpsAgentConfig;
   setDefaultModel: boolean;
   defaultModel: string;
-  applyDefaultConfig: (config: ClawdbotConfig) => ClawdbotConfig;
-  applyProviderConfig: (config: ClawdbotConfig) => ClawdbotConfig;
+  applyDefaultConfig: (config: OpsAgentConfig) => OpsAgentConfig;
+  applyProviderConfig: (config: OpsAgentConfig) => OpsAgentConfig;
   noteDefault?: string;
   noteAgentModel: (model: string) => Promise<void>;
   prompter: WizardPrompter;
-}): Promise<{ config: ClawdbotConfig; agentModelOverride?: string }> {
+}): Promise<{ config: OpsAgentConfig; agentModelOverride?: string }> {
   if (params.setDefaultModel) {
     const next = params.applyDefaultConfig(params.config);
     if (params.noteDefault) {

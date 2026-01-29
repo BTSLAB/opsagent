@@ -22,10 +22,10 @@ vi.mock("../config/config.js", async (importOriginal) => {
 });
 
 import "./test-helpers/fast-core-tools.js";
-import { createClawdbotTools } from "./clawdbot-tools.js";
+import { createOpsAgentTools } from "./opsagent-tools.js";
 import { resetSubagentRegistryForTests } from "./subagent-registry.js";
 
-describe("clawdbot-tools: subagents", () => {
+describe("opsagent-tools: subagents", () => {
   beforeEach(() => {
     configOverride = {
       session: {
@@ -59,7 +59,7 @@ describe("clawdbot-tools: subagents", () => {
       return {};
     });
 
-    const tool = createClawdbotTools({
+    const tool = createOpsAgentTools({
       agentSessionKey: "agent:research:main",
       agentChannel: "discord",
     }).find((candidate) => candidate.name === "sessions_spawn");
@@ -108,7 +108,7 @@ describe("clawdbot-tools: subagents", () => {
       return {};
     });
 
-    const tool = createClawdbotTools({
+    const tool = createOpsAgentTools({
       agentSessionKey: "main",
       agentChannel: "whatsapp",
     }).find((candidate) => candidate.name === "sessions_spawn");
@@ -143,7 +143,7 @@ describe("clawdbot-tools: subagents", () => {
       return {};
     });
 
-    const tool = createClawdbotTools({
+    const tool = createOpsAgentTools({
       agentSessionKey: "main",
       agentChannel: "whatsapp",
     }).find((candidate) => candidate.name === "sessions_spawn");

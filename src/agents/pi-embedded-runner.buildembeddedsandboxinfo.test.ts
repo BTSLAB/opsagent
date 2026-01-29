@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import { describe, expect, it, vi } from "vitest";
-import type { ClawdbotConfig } from "../config/config.js";
-import { ensureClawdbotModelsJson } from "./models-config.js";
+import type { OpsAgentConfig } from "../config/config.js";
+import { ensureOpsAgentModelsJson } from "./models-config.js";
 import { buildEmbeddedSandboxInfo } from "./pi-embedded-runner.js";
 import type { SandboxContext } from "./sandbox.js";
 
@@ -68,10 +68,10 @@ const _makeOpenAiConfig = (modelIds: string[]) =>
         },
       },
     },
-  }) satisfies ClawdbotConfig;
+  }) satisfies OpsAgentConfig;
 
-const _ensureModels = (cfg: ClawdbotConfig, agentDir: string) =>
-  ensureClawdbotModelsJson(cfg, agentDir) as unknown;
+const _ensureModels = (cfg: OpsAgentConfig, agentDir: string) =>
+  ensureOpsAgentModelsJson(cfg, agentDir) as unknown;
 
 const _textFromContent = (content: unknown) => {
   if (typeof content === "string") return content;
@@ -105,14 +105,14 @@ describe("buildEmbeddedSandboxInfo", () => {
     const sandbox = {
       enabled: true,
       sessionKey: "session:test",
-      workspaceDir: "/tmp/clawdbot-sandbox",
-      agentWorkspaceDir: "/tmp/clawdbot-workspace",
+      workspaceDir: "/tmp/opsagent-sandbox",
+      agentWorkspaceDir: "/tmp/opsagent-workspace",
       workspaceAccess: "none",
-      containerName: "clawdbot-sbx-test",
+      containerName: "opsagent-sbx-test",
       containerWorkdir: "/workspace",
       docker: {
-        image: "clawdbot-sandbox:bookworm-slim",
-        containerPrefix: "clawdbot-sbx-",
+        image: "opsagent-sandbox:bookworm-slim",
+        containerPrefix: "opsagent-sbx-",
         workdir: "/workspace",
         readOnlyRoot: true,
         tmpfs: ["/tmp"],
@@ -129,13 +129,13 @@ describe("buildEmbeddedSandboxInfo", () => {
       browser: {
         controlUrl: "http://localhost:9222",
         noVncUrl: "http://localhost:6080",
-        containerName: "clawdbot-sbx-browser-test",
+        containerName: "opsagent-sbx-browser-test",
       },
     } satisfies SandboxContext;
 
     expect(buildEmbeddedSandboxInfo(sandbox)).toEqual({
       enabled: true,
-      workspaceDir: "/tmp/clawdbot-sandbox",
+      workspaceDir: "/tmp/opsagent-sandbox",
       workspaceAccess: "none",
       agentWorkspaceMount: undefined,
       browserControlUrl: "http://localhost:9222",
@@ -147,14 +147,14 @@ describe("buildEmbeddedSandboxInfo", () => {
     const sandbox = {
       enabled: true,
       sessionKey: "session:test",
-      workspaceDir: "/tmp/clawdbot-sandbox",
-      agentWorkspaceDir: "/tmp/clawdbot-workspace",
+      workspaceDir: "/tmp/opsagent-sandbox",
+      agentWorkspaceDir: "/tmp/opsagent-workspace",
       workspaceAccess: "none",
-      containerName: "clawdbot-sbx-test",
+      containerName: "opsagent-sbx-test",
       containerWorkdir: "/workspace",
       docker: {
-        image: "clawdbot-sandbox:bookworm-slim",
-        containerPrefix: "clawdbot-sbx-",
+        image: "opsagent-sandbox:bookworm-slim",
+        containerPrefix: "opsagent-sbx-",
         workdir: "/workspace",
         readOnlyRoot: true,
         tmpfs: ["/tmp"],
@@ -178,7 +178,7 @@ describe("buildEmbeddedSandboxInfo", () => {
       }),
     ).toEqual({
       enabled: true,
-      workspaceDir: "/tmp/clawdbot-sandbox",
+      workspaceDir: "/tmp/opsagent-sandbox",
       workspaceAccess: "none",
       agentWorkspaceMount: undefined,
       hostBrowserAllowed: false,

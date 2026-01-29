@@ -1,0 +1,4 @@
+*.db
+*.gob
+.env
+obsidian-sync

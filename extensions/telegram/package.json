@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/telegram",
+  "name": "@opsagent/telegram",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Telegram channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Telegram channel plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]

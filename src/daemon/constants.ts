@@ -1,16 +1,16 @@
 // Default service labels (for backward compatibility and when no profile specified)
-export const GATEWAY_LAUNCH_AGENT_LABEL = "com.clawdbot.gateway";
-export const GATEWAY_SYSTEMD_SERVICE_NAME = "clawdbot-gateway";
-export const GATEWAY_WINDOWS_TASK_NAME = "Clawdbot Gateway";
-export const GATEWAY_SERVICE_MARKER = "clawdbot";
+export const GATEWAY_LAUNCH_AGENT_LABEL = "com.opsagent.gateway";
+export const GATEWAY_SYSTEMD_SERVICE_NAME = "opsagent-gateway";
+export const GATEWAY_WINDOWS_TASK_NAME = "OpsAgent Gateway";
+export const GATEWAY_SERVICE_MARKER = "opsagent";
 export const GATEWAY_SERVICE_KIND = "gateway";
-export const NODE_LAUNCH_AGENT_LABEL = "com.clawdbot.node";
-export const NODE_SYSTEMD_SERVICE_NAME = "clawdbot-node";
-export const NODE_WINDOWS_TASK_NAME = "Clawdbot Node";
-export const NODE_SERVICE_MARKER = "clawdbot";
+export const NODE_LAUNCH_AGENT_LABEL = "com.opsagent.node";
+export const NODE_SYSTEMD_SERVICE_NAME = "opsagent-node";
+export const NODE_WINDOWS_TASK_NAME = "OpsAgent Node";
+export const NODE_SERVICE_MARKER = "opsagent";
 export const NODE_SERVICE_KIND = "node";
 export const NODE_WINDOWS_TASK_SCRIPT_NAME = "node.cmd";
-export const LEGACY_GATEWAY_LAUNCH_AGENT_LABELS = ["com.steipete.clawdbot.gateway"];
+export const LEGACY_GATEWAY_LAUNCH_AGENT_LABELS = ["com.steipete.opsagent.gateway"];
 export const LEGACY_GATEWAY_SYSTEMD_SERVICE_NAMES: string[] = [];
 export const LEGACY_GATEWAY_WINDOWS_TASK_NAMES: string[] = [];
 
@@ -30,19 +30,19 @@ export function resolveGatewayLaunchAgentLabel(profile?: string): string {
   if (!normalized) {
     return GATEWAY_LAUNCH_AGENT_LABEL;
   }
-  return `com.clawdbot.${normalized}`;
+  return `com.opsagent.${normalized}`;
 }
 
 export function resolveGatewaySystemdServiceName(profile?: string): string {
   const suffix = resolveGatewayProfileSuffix(profile);
   if (!suffix) return GATEWAY_SYSTEMD_SERVICE_NAME;
-  return `clawdbot-gateway${suffix}`;
+  return `opsagent-gateway${suffix}`;
 }
 
 export function resolveGatewayWindowsTaskName(profile?: string): string {
   const normalized = normalizeGatewayProfile(profile);
   if (!normalized) return GATEWAY_WINDOWS_TASK_NAME;
-  return `Clawdbot Gateway (${normalized})`;
+  return `OpsAgent Gateway (${normalized})`;
 }
 
 export function formatGatewayServiceDescription(params?: {
@@ -54,8 +54,8 @@ export function formatGatewayServiceDescription(params?: {
   const parts: string[] = [];
   if (profile) parts.push(`profile: ${profile}`);
   if (version) parts.push(`v${version}`);
-  if (parts.length === 0) return "Clawdbot Gateway";
-  return `Clawdbot Gateway (${parts.join(", ")})`;
+  if (parts.length === 0) return "OpsAgent Gateway";
+  return `OpsAgent Gateway (${parts.join(", ")})`;
 }
 
 export function resolveNodeLaunchAgentLabel(): string {
@@ -72,6 +72,6 @@ export function resolveNodeWindowsTaskName(): string {
 
 export function formatNodeServiceDescription(params?: { version?: string }): string {
   const version = params?.version?.trim();
-  if (!version) return "Clawdbot Node Host";
-  return `Clawdbot Node Host (v${version})`;
+  if (!version) return "OpsAgent Node Host";
+  return `OpsAgent Node Host (v${version})`;
 }

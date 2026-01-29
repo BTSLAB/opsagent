@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/slack",
+  "name": "@opsagent/slack",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Slack channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Slack channel plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]

@@ -1,11 +1,11 @@
-import type { ClawdbotConfig } from "../config/types.js";
+import type { OpsAgentConfig } from "../config/types.js";
 
 export type CommandScope = "text" | "native" | "both";
 
 export type CommandArgType = "string" | "number" | "boolean";
 
 export type CommandArgChoiceContext = {
-  cfg?: ClawdbotConfig;
+  cfg?: OpsAgentConfig;
   provider?: string;
   model?: string;
   command: ChatCommandDefinition;
@@ -68,7 +68,7 @@ export type CommandDetection = {
 };
 
 export type ShouldHandleTextCommandsParams = {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   surface: string;
   commandSource?: "text" | "native";
 };

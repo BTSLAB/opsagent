@@ -1,9 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { resolveClawdbotPackageRoot } from "../infra/clawdbot-root.js";
+import { resolveOpsAgentPackageRoot } from "../infra/opsagent-root.js";
 
-export async function resolveClawdbotDocsPath(params: {
+export async function resolveOpsAgentDocsPath(params: {
   workspaceDir?: string;
   argv1?: string;
   cwd?: string;
@@ -15,7 +15,7 @@ export async function resolveClawdbotDocsPath(params: {
     if (fs.existsSync(workspaceDocs)) return workspaceDocs;
   }
 
-  const packageRoot = await resolveClawdbotPackageRoot({
+  const packageRoot = await resolveOpsAgentPackageRoot({
     cwd: params.cwd,
     argv1: params.argv1,
     moduleUrl: params.moduleUrl,

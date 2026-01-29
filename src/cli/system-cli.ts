@@ -23,7 +23,7 @@ export function registerSystemCli(program: Command) {
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/system", "docs.clawd.bot/cli/system")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/system", "docs.opsagent.dev/cli/system")}\n`,
     );
 
   addGatewayClientOptions(

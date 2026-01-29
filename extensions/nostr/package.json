@@ -1,9 +1,14 @@
 {
-  "name": "@clawdbot/nostr",
+  "name": "@opsagent/nostr",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Nostr channel plugin for NIP-04 encrypted DMs",
-  "clawdbot": {
+  "description": "OpsAgent Nostr channel plugin for NIP-04 encrypted DMs",
+  "dependencies": {
+    "opsagent": "workspace:*",
+    "nostr-tools": "^2.20.0",
+    "zod": "^4.3.6"
+  },
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -18,14 +23,9 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@clawdbot/nostr",
+      "npmSpec": "@opsagent/nostr",
       "localPath": "extensions/nostr",
       "defaultChoice": "npm"
     }
-  },
-  "dependencies": {
-    "clawdbot": "workspace:*",
-    "nostr-tools": "^2.20.0",
-    "zod": "^4.3.6"
   }
 }

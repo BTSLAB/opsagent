@@ -1,9 +1,12 @@
 {
-  "name": "@clawdbot/line",
+  "name": "@opsagent/line",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot LINE channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent LINE channel plugin",
+  "devDependencies": {
+    "opsagent": "workspace:*"
+  },
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -18,12 +21,9 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@clawdbot/line",
+      "npmSpec": "@opsagent/line",
       "localPath": "extensions/line",
       "defaultChoice": "npm"
     }
-  },
-  "devDependencies": {
-    "clawdbot": "workspace:*"
   }
 }

@@ -1,16 +1,16 @@
 export const GATEWAY_CLIENT_IDS = {
   WEBCHAT_UI: "webchat-ui",
-  CONTROL_UI: "clawdbot-control-ui",
+  CONTROL_UI: "opsagent-control-ui",
   WEBCHAT: "webchat",
   CLI: "cli",
   GATEWAY_CLIENT: "gateway-client",
-  MACOS_APP: "clawdbot-macos",
-  IOS_APP: "clawdbot-ios",
-  ANDROID_APP: "clawdbot-android",
+  MACOS_APP: "opsagent-macos",
+  IOS_APP: "opsagent-ios",
+  ANDROID_APP: "opsagent-android",
   NODE_HOST: "node-host",
   TEST: "test",
   FINGERPRINT: "fingerprint",
-  PROBE: "clawdbot-probe",
+  PROBE: "opsagent-probe",
 } as const;
 
 export type GatewayClientId = (typeof GATEWAY_CLIENT_IDS)[keyof typeof GATEWAY_CLIENT_IDS];

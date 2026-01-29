@@ -1,9 +1,18 @@
 {
-  "name": "@clawdbot/googlechat",
+  "name": "@opsagent/googlechat",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Google Chat channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Google Chat channel plugin",
+  "dependencies": {
+    "google-auth-library": "^10.5.0"
+  },
+  "devDependencies": {
+    "opsagent": "workspace:*"
+  },
+  "peerDependencies": {
+    "opsagent": ">=2026.1.25"
+  },
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -22,18 +31,9 @@
       "order": 55
     },
     "install": {
-      "npmSpec": "@clawdbot/googlechat",
+      "npmSpec": "@opsagent/googlechat",
       "localPath": "extensions/googlechat",
       "defaultChoice": "npm"
     }
-  },
-  "dependencies": {
-    "google-auth-library": "^10.5.0"
-  },
-  "devDependencies": {
-    "clawdbot": "workspace:*"
-  },
-  "peerDependencies": {
-    "clawdbot": ">=2026.1.25"
   }
 }

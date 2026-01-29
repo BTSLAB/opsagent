@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { ClawdbotConfig } from "../config/config.js";
+import type { OpsAgentConfig } from "../config/config.js";
 import { runWithModelFallback } from "./model-fallback.js";
 
-function makeCfg(overrides: Partial<ClawdbotConfig> = {}): ClawdbotConfig {
+function makeCfg(overrides: Partial<OpsAgentConfig> = {}): OpsAgentConfig {
   return {
     agents: {
       defaults: {
@@ -14,7 +14,7 @@ function makeCfg(overrides: Partial<ClawdbotConfig> = {}): ClawdbotConfig {
       },
     },
     ...overrides,
-  } as ClawdbotConfig;
+  } as OpsAgentConfig;
 }
 
 describe("runWithModelFallback", () => {
@@ -156,7 +156,7 @@ describe("runWithModelFallback", () => {
           },
         },
       },
-    } as ClawdbotConfig;
+    } as OpsAgentConfig;
 
     const calls: Array<{ provider: string; model: string }> = [];
 
@@ -193,7 +193,7 @@ describe("runWithModelFallback", () => {
           },
         },
       },
-    } as ClawdbotConfig;
+    } as OpsAgentConfig;
 
     const calls: Array<{ provider: string; model: string }> = [];
 

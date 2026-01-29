@@ -1,4 +1,4 @@
-import type { ClawdbotConfig, SlackSlashCommandConfig } from "../../config/config.js";
+import type { OpsAgentConfig, SlackSlashCommandConfig } from "../../config/config.js";
 import type { RuntimeEnv } from "../../runtime.js";
 import type { SlackFile, SlackMessageEvent } from "../types.js";
 
@@ -7,7 +7,7 @@ export type MonitorSlackOpts = {
   appToken?: string;
   accountId?: string;
   mode?: "socket" | "http";
-  config?: ClawdbotConfig;
+  config?: OpsAgentConfig;
   runtime?: RuntimeEnv;
   abortSignal?: AbortSignal;
   mediaMaxMb?: number;

@@ -37,9 +37,9 @@ describe("probeLineBot", () => {
 
   it("returns bot info when available", async () => {
     getBotInfoMock.mockResolvedValue({
-      displayName: "Clawdbot",
+      displayName: "OpsAgent",
       userId: "U123",
-      basicId: "@clawdbot",
+      basicId: "@opsagent",
       pictureUrl: "https://example.com/bot.png",
     });
 

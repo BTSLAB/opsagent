@@ -3,10 +3,10 @@ import {
   createTypingCallbacks,
   logTypingFailure,
   resolveChannelMediaMaxBytes,
-  type ClawdbotConfig,
+  type OpsAgentConfig,
   type MSTeamsReplyStyle,
   type RuntimeEnv,
-} from "clawdbot/plugin-sdk";
+} from "opsagent/plugin-sdk";
 import type { MSTeamsAccessTokenProvider } from "./attachments/types.js";
 import type { StoredConversationReference } from "./conversation-store.js";
 import {
@@ -24,7 +24,7 @@ import type { MSTeamsTurnContext } from "./sdk-types.js";
 import { getMSTeamsRuntime } from "./runtime.js";
 
 export function createMSTeamsReplyDispatcher(params: {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   agentId: string;
   runtime: RuntimeEnv;
   log: MSTeamsMonitorLogger;

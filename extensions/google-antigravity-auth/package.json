@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/google-antigravity-auth",
+  "name": "@opsagent/google-antigravity-auth",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Google Antigravity OAuth provider plugin",
-  "clawdbot": {
+  "description": "OpsAgent Google Antigravity OAuth provider plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { ClawdbotConfig } from "clawdbot/plugin-sdk";
+import type { OpsAgentConfig } from "opsagent/plugin-sdk";
 
 import { zaloPlugin } from "./channel.js";
 
@@ -12,7 +12,7 @@ describe("zalo directory", () => {
           allowFrom: ["zalo:123", "zl:234", "345"],
         },
       },
-    } as unknown as ClawdbotConfig;
+    } as unknown as OpsAgentConfig;
 
     expect(zaloPlugin.directory).toBeTruthy();
     expect(zaloPlugin.directory?.listPeers).toBeTruthy();

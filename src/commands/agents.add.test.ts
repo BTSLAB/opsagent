@@ -25,7 +25,7 @@ const runtime: RuntimeEnv = {
 };
 
 const baseSnapshot = {
-  path: "/tmp/clawdbot.json",
+  path: "/tmp/opsagent.json",
   exists: true,
   raw: "{}",
   parsed: {},

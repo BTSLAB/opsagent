@@ -1,23 +1,17 @@
 # Security Policy
 
-If you believe you've found a security issue in Clawdbot, please report it privately.
+If you believe you've found a security issue in OpsAgent, please report it privately.
 
 ## Reporting
 
-- Email: `steipete@gmail.com`
+- Open a private issue on the BTS Labs GitHub repository.
 - What to include: reproduction steps, impact assessment, and (if possible) a minimal PoC.
-
-## Operational Guidance
-
-For threat model + hardening guidance (including `clawdbot security audit --deep` and `--fix`), see:
-
-- `https://docs.clawd.bot/gateway/security`
 
 ## Runtime Requirements
 
 ### Node.js Version
 
-Clawdbot requires **Node.js 22.12.0 or later** (LTS). This version includes important security patches:
+OpsAgent requires **Node.js 22.12.0 or later** (LTS). This version includes important security patches:
 
 - CVE-2025-59466: async_hooks DoS vulnerability
 - CVE-2026-21636: Permission model bypass vulnerability
@@ -30,7 +24,7 @@ node --version  # Should be v22.12.0 or later
 
 ### Docker Security
 
-When running Clawdbot in Docker:
+When running OpsAgent in Docker:
 
 1. The official image runs as a non-root user (`node`) for reduced attack surface
 2. Use `--read-only` flag when possible for additional filesystem protection
@@ -40,8 +34,8 @@ Example secure Docker run:
 
 ```bash
 docker run --read-only --cap-drop=ALL \
-  -v clawdbot-data:/app/data \
-  clawdbot/clawdbot:latest
+  -v opsagent-data:/app/data \
+  opsagent:latest
 ```
 
 ## Security Scanning

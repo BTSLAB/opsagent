@@ -75,10 +75,10 @@ async function main() {
   }
 
   const baseDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "clawdbot-zai-fallback-"),
+    path.join(os.tmpdir(), "opsagent-zai-fallback-"),
   );
   const stateDir = path.join(baseDir, "state");
-  const configPath = path.join(baseDir, "clawdbot.json");
+  const configPath = path.join(baseDir, "opsagent.json");
   await fs.mkdir(stateDir, { recursive: true });
 
   const config = {
@@ -98,12 +98,12 @@ async function main() {
   await fs.writeFile(configPath, JSON.stringify(config, null, 2), "utf8");
 
   const sessionId =
-    process.env.CLAWDBOT_ZAI_FALLBACK_SESSION_ID ?? randomUUID();
+    process.env.OPSAGENT_ZAI_FALLBACK_SESSION_ID ?? randomUUID();
 
   const baseEnv: NodeJS.ProcessEnv = {
     ...process.env,
-    CLAWDBOT_CONFIG_PATH: configPath,
-    CLAWDBOT_STATE_DIR: stateDir,
+    OPSAGENT_CONFIG_PATH: configPath,
+    OPSAGENT_STATE_DIR: stateDir,
     ZAI_API_KEY: zaiKey,
     Z_AI_API_KEY: "",
   };
@@ -127,7 +127,7 @@ async function main() {
   const run1 = await runCommand(
     "run1",
     [
-      "clawdbot",
+      "opsagent",
       "agent",
       "--local",
       "--session-id",
@@ -159,7 +159,7 @@ async function main() {
   const run2 = await runCommand(
     "run2",
     [
-      "clawdbot",
+      "opsagent",
       "agent",
       "--local",
       "--session-id",

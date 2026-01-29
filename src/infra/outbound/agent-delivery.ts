@@ -14,7 +14,7 @@ import {
   resolveSessionDeliveryTarget,
   type SessionDeliveryTarget,
 } from "./targets.js";
-import type { ClawdbotConfig } from "../../config/config.js";
+import type { OpsAgentConfig } from "../../config/config.js";
 import type { OutboundTargetResolution } from "./targets.js";
 
 export type AgentDeliveryPlan = {
@@ -98,7 +98,7 @@ export function resolveAgentDeliveryPlan(params: {
 }
 
 export function resolveAgentOutboundTarget(params: {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   plan: AgentDeliveryPlan;
   targetMode?: ChannelOutboundTargetMode;
   validateExplicitTarget?: boolean;

@@ -1,4 +1,4 @@
-import type { ClawdbotConfig } from "../config/config.js";
+import type { OpsAgentConfig } from "../config/config.js";
 import type { SessionChatType, SessionEntry } from "../config/sessions.js";
 import { normalizeChatType } from "../channels/chat-type.js";
 
@@ -33,7 +33,7 @@ function deriveChatTypeFromKey(key?: string): SessionChatType | undefined {
 }
 
 export function resolveSendPolicy(params: {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   entry?: SessionEntry;
   sessionKey?: string;
   channel?: string;

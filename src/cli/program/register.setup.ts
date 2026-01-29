@@ -10,11 +10,11 @@ import { runCommandWithRuntime } from "../cli-utils.js";
 export function registerSetupCommand(program: Command) {
   program
     .command("setup")
-    .description("Initialize ~/.clawdbot/clawdbot.json and the agent workspace")
+    .description("Initialize ~/.opsagent/opsagent.json and the agent workspace")
     .addHelpText(
       "after",
       () =>
-        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/setup", "docs.clawd.bot/cli/setup")}\n`,
+        `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/setup", "docs.opsagent.dev/cli/setup")}\n`,
     )
     .option(
       "--workspace <dir>",

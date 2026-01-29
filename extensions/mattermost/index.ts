@@ -1,5 +1,5 @@
-import type { ClawdbotPluginApi } from "clawdbot/plugin-sdk";
-import { emptyPluginConfigSchema } from "clawdbot/plugin-sdk";
+import type { OpsAgentPluginApi } from "opsagent/plugin-sdk";
+import { emptyPluginConfigSchema } from "opsagent/plugin-sdk";
 
 import { mattermostPlugin } from "./src/channel.js";
 import { setMattermostRuntime } from "./src/runtime.js";
@@ -9,7 +9,7 @@ const plugin = {
   name: "Mattermost",
   description: "Mattermost channel plugin",
   configSchema: emptyPluginConfigSchema(),
-  register(api: ClawdbotPluginApi) {
+  register(api: OpsAgentPluginApi) {
     setMattermostRuntime(api.runtime);
     api.registerChannel({ plugin: mattermostPlugin });
   },

@@ -1,12 +1,12 @@
-import type { ClawdbotConfig, WizardPrompter } from "clawdbot/plugin-sdk";
-import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "clawdbot/plugin-sdk";
+import type { OpsAgentConfig, WizardPrompter } from "opsagent/plugin-sdk";
+import { DEFAULT_ACCOUNT_ID, normalizeAccountId } from "opsagent/plugin-sdk";
 
 type PromptAccountIdParams = {
-  cfg: ClawdbotConfig;
+  cfg: OpsAgentConfig;
   prompter: WizardPrompter;
   label: string;
   currentId?: string;
-  listAccountIds: (cfg: ClawdbotConfig) => string[];
+  listAccountIds: (cfg: OpsAgentConfig) => string[];
   defaultAccountId: string;
 };
 

@@ -1,6 +1,6 @@
-# @clawdbot/voice-call
+# @opsagent/voice-call
 
-Official Voice Call plugin for **Clawdbot**.
+Official Voice Call plugin for **OpsAgent**.
 
 Providers:
 - **Twilio** (Programmable Voice + Media Streams)
@@ -8,15 +8,15 @@ Providers:
 - **Plivo** (Voice API + XML transfer + GetInput speech)
 - **Mock** (dev/no network)
 
-Docs: `https://docs.clawd.bot/plugins/voice-call`
-Plugin system: `https://docs.clawd.bot/plugin`
+Docs: `https://docs.opsagent.dev/plugins/voice-call`
+Plugin system: `https://docs.opsagent.dev/plugin`
 
 ## Install (local dev)
 
-### Option A: install via Clawdbot (recommended)
+### Option A: install via OpsAgent (recommended)
 
 ```bash
-clawdbot plugins install @clawdbot/voice-call
+opsagent plugins install @opsagent/voice-call
 ```
 
 Restart the Gateway afterwards.
@@ -24,9 +24,9 @@ Restart the Gateway afterwards.
 ### Option B: copy into your global extensions folder (dev)
 
 ```bash
-mkdir -p ~/.clawdbot/extensions
-cp -R extensions/voice-call ~/.clawdbot/extensions/voice-call
-cd ~/.clawdbot/extensions/voice-call && pnpm install
+mkdir -p ~/.opsagent/extensions
+cp -R extensions/voice-call ~/.opsagent/extensions/voice-call
+cd ~/.opsagent/extensions/voice-call && pnpm install
 ```
 
 ## Config
@@ -99,13 +99,13 @@ Notes:
 ## CLI
 
 ```bash
-clawdbot voicecall call --to "+15555550123" --message "Hello from Clawdbot"
-clawdbot voicecall continue --call-id <id> --message "Any questions?"
-clawdbot voicecall speak --call-id <id> --message "One moment"
-clawdbot voicecall end --call-id <id>
-clawdbot voicecall status --call-id <id>
-clawdbot voicecall tail
-clawdbot voicecall expose --mode funnel
+opsagent voicecall call --to "+15555550123" --message "Hello from OpsAgent"
+opsagent voicecall continue --call-id <id> --message "Any questions?"
+opsagent voicecall speak --call-id <id> --message "One moment"
+opsagent voicecall end --call-id <id>
+opsagent voicecall status --call-id <id>
+opsagent voicecall tail
+opsagent voicecall expose --mode funnel
 ```
 
 ## Tool

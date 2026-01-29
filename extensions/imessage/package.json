@@ -1,9 +1,9 @@
 {
-  "name": "@clawdbot/imessage",
+  "name": "@opsagent/imessage",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot iMessage channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent iMessage channel plugin",
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ]

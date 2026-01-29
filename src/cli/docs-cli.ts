@@ -9,11 +9,11 @@ import { runCommandWithRuntime } from "./cli-utils.js";
 export function registerDocsCli(program: Command) {
   program
     .command("docs")
-    .description("Search the live Clawdbot docs")
+    .description("Search the live OpsAgent docs")
     .argument("[query...]", "Search query")
     .addHelpText(
       "after",
-      () => `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/docs", "docs.clawd.bot/cli/docs")}\n`,
+      () => `\n${theme.muted("Docs:")} ${formatDocsLink("/cli/docs", "docs.opsagent.dev/cli/docs")}\n`,
     )
     .action(async (queryParts: string[]) => {
       await runCommandWithRuntime(defaultRuntime, async () => {

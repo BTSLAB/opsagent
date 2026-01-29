@@ -1,9 +1,13 @@
 {
-  "name": "@clawdbot/tlon",
+  "name": "@opsagent/tlon",
   "version": "2026.1.25",
   "type": "module",
-  "description": "Clawdbot Tlon/Urbit channel plugin",
-  "clawdbot": {
+  "description": "OpsAgent Tlon/Urbit channel plugin",
+  "dependencies": {
+    "@urbit/aura": "^3.0.0",
+    "@urbit/http-api": "^3.0.0"
+  },
+  "opsagent": {
     "extensions": [
       "./index.ts"
     ],
@@ -18,13 +22,9 @@
       "quickstartAllowFrom": true
     },
     "install": {
-      "npmSpec": "@clawdbot/tlon",
+      "npmSpec": "@opsagent/tlon",
       "localPath": "extensions/tlon",
       "defaultChoice": "npm"
     }
-  },
-  "dependencies": {
-    "@urbit/aura": "^3.0.0",
-    "@urbit/http-api": "^3.0.0"
   }
 }
