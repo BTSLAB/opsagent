@@ -1,6 +1,6 @@
 # OpsAgent Installer for Windows
-# Usage: irm https://yourdomain.com/install.ps1 | iex
-#   or:  iex "& { $(irm https://yourdomain.com/install.ps1) } -Version 2026.1.25"
+# Usage: irm https://raw.githubusercontent.com/BTSLAB/opsagent/main/scripts/install.ps1 | iex
+#   or:  iex "& { $(irm https://raw.githubusercontent.com/BTSLAB/opsagent/main/scripts/install.ps1) } -Version 2026.1.25"
 #
 # Parameters:
 #   -Beta          Install beta channel

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # OpsAgent Installer
-# Usage: curl -fsSL https://yourdomain.com/install.sh | bash
-#   or:  curl -fsSL https://yourdomain.com/install.sh | bash -s -- [OPTIONS]
+# Usage: curl -fsSL https://raw.githubusercontent.com/BTSLAB/opsagent/main/scripts/install.sh | bash
+#   or:  curl -fsSL https://raw.githubusercontent.com/BTSLAB/opsagent/main/scripts/install.sh | bash -s -- [OPTIONS]
 #
 # Options:
 #   --beta              Install beta channel (npm dist-tag "beta")
@@ -61,8 +61,8 @@ ART
 usage() {
   banner
   cat <<EOF
-Usage: curl -fsSL https://yourdomain.com/install.sh | bash
-   or: curl -fsSL https://yourdomain.com/install.sh | bash -s -- [OPTIONS]
+Usage: curl -fsSL https://raw.githubusercontent.com/BTSLAB/opsagent/main/scripts/install.sh | bash
+   or: curl -fsSL https://raw.githubusercontent.com/BTSLAB/opsagent/main/scripts/install.sh | bash -s -- [OPTIONS]
 
 Options:
   --beta                  Install beta channel
