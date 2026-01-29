@@ -21,7 +21,7 @@ vi.mock("../config/config.js", async (importOriginal) => {
 });
 
 import "./test-helpers/fast-core-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 
 const waitForCalls = async (getCount: () => number, count: number, timeoutMs = 2000) => {
   const start = Date.now();

@@ -17,7 +17,7 @@ vi.mock("../config/config.js", async (importOriginal) => {
 });
 
 import "./test-helpers/fast-core-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 
 describe("agents_list", () => {
   beforeEach(() => {

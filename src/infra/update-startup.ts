@@ -3,7 +3,7 @@ import path from "node:path";
 
 import type { loadConfig } from "../config/config.js";
 import { resolveStateDir } from "../config/paths.js";
-import { resolveOpsAgentPackageRoot } from "./opsagent-root.js";
+import { resolveOpsAgentPackageRoot } from "./clawdbot-root.js";
 import { compareSemverStrings, resolveNpmChannelTag, checkUpdateStatus } from "./update-check.js";
 import { normalizeUpdateChannel, DEFAULT_PACKAGE_CHANNEL } from "./update-channels.js";
 import { VERSION } from "../version.js";

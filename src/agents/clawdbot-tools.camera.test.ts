@@ -11,7 +11,7 @@ vi.mock("../media/image-ops.js", () => ({
 }));
 
 import "./test-helpers/fast-core-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 
 describe("nodes camera_snap", () => {
   beforeEach(() => {

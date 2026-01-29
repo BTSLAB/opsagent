@@ -14,7 +14,7 @@ import { extractInlineSimpleCommand } from "./reply-inline.js";
 import type { TypingController } from "./typing.js";
 import { listSkillCommandsForWorkspace, resolveSkillCommandInvocation } from "../skill-commands.js";
 import { logVerbose } from "../../globals.js";
-import { createOpsAgentTools } from "../../agents/opsagent-tools.js";
+import { createOpsAgentTools } from "../../agents/clawdbot-tools.js";
 import { resolveGatewayMessageChannel } from "../../utils/message-channel.js";
 
 export type InlineActionResult =

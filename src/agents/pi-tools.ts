@@ -16,7 +16,7 @@ import {
   type ProcessToolDefaults,
 } from "./bash-tools.js";
 import { listChannelAgentTools } from "./channel-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 import type { ModelAuthMode } from "./model-auth.js";
 import { wrapToolWithAbortSignal } from "./pi-tools.abort.js";
 import {

@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 
 import "./test-helpers/fast-core-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 
 vi.mock("./tools/gateway.js", () => ({
   callGatewayTool: vi.fn(async (method: string) => {

@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolveOpsAgentPackageRoot } from "../infra/opsagent-root.js";
+import { resolveOpsAgentPackageRoot } from "../infra/clawdbot-root.js";
 import { runCommandWithTimeout } from "../process/exec.js";
 import type { RuntimeEnv } from "../runtime.js";
 import { note } from "../terminal/note.js";

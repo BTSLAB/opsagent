@@ -23,7 +23,7 @@ vi.mock("../config/config.js", async (importOriginal) => {
 
 import { emitAgentEvent } from "../infra/agent-events.js";
 import "./test-helpers/fast-core-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 import { resetSubagentRegistryForTests } from "./subagent-registry.js";
 
 describe("opsagent-tools: subagents", () => {

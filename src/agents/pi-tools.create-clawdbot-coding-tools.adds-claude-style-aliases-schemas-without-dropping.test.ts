@@ -4,7 +4,7 @@ import path from "node:path";
 import type { AgentTool } from "@mariozechner/pi-agent-core";
 import { describe, expect, it, vi } from "vitest";
 import "./test-helpers/fast-coding-tools.js";
-import { createOpsAgentTools } from "./opsagent-tools.js";
+import { createOpsAgentTools } from "./clawdbot-tools.js";
 import { __testing, createOpsAgentCodingTools } from "./pi-tools.js";
 import { createSandboxedReadTool } from "./pi-tools.read.js";
 import { createBrowserTool } from "./tools/browser-tool.js";

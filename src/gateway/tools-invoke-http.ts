@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
-import { createOpsAgentTools } from "../agents/opsagent-tools.js";
+import { createOpsAgentTools } from "../agents/clawdbot-tools.js";
 import {
   filterToolsByPolicy,
   resolveEffectiveToolPolicy,

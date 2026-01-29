@@ -1,4 +1,4 @@
-import { resolveOpsAgentPackageRoot } from "../../infra/opsagent-root.js";
+import { resolveOpsAgentPackageRoot } from "../../infra/clawdbot-root.js";
 import { scheduleGatewaySigusr1Restart } from "../../infra/restart.js";
 import {
   formatDoctorNonInteractiveHint,

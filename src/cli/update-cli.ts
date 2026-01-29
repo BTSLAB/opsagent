@@ -5,7 +5,7 @@ import path from "node:path";
 import type { Command } from "commander";
 
 import { readConfigFileSnapshot, writeConfigFile } from "../config/config.js";
-import { resolveOpsAgentPackageRoot } from "../infra/opsagent-root.js";
+import { resolveOpsAgentPackageRoot } from "../infra/clawdbot-root.js";
 import {
   checkUpdateStatus,
   compareSemverStrings,

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { resolveOpsAgentPackageRoot } from "../infra/opsagent-root.js";
+import { resolveOpsAgentPackageRoot } from "../infra/clawdbot-root.js";
 
 export async function resolveOpsAgentDocsPath(params: {
   workspaceDir?: string;
