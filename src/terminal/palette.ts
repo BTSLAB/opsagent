@@ -1,12 +1,13 @@
-// Lobster palette tokens for CLI/UI theming. "lobster seam" == use this palette.
-// Keep in sync with docs/cli/index.md (CLI palette section).
+// BTS brand palette tokens for CLI/UI theming.
+// Primary: dark navy (#0b1416) + orange/gold (#f6ad55) + teal (#81e6d9)
+// Source: https://btsystems.io
 export const LOBSTER_PALETTE = {
-  accent: "#FF5A2D",
-  accentBright: "#FF7A3D",
-  accentDim: "#D14A22",
-  info: "#FF8A5B",
-  success: "#2FBF71",
+  accent: "#f6ad55",
+  accentBright: "#f9c178",
+  accentDim: "#d4903e",
+  info: "#81e6d9",
+  success: "#9ae6b4",
   warn: "#FFB020",
-  error: "#E23D2D",
-  muted: "#8B7F77",
+  error: "#e93d3d",
+  muted: "#8893a8",
 } as const;
