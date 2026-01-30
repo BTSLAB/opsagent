@@ -7,6 +7,8 @@ export interface OllamaModel {
     family?: string;
     parameter_size?: string;
   };
+  remote_model?: string;
+  remote_host?: string;
 }
 
 interface OllamaTagsResponse {
@@ -16,12 +18,12 @@ interface OllamaTagsResponse {
 export const OLLAMA_CURATED_MODELS = [
   { value: "deepseek-r1:8b", label: "DeepSeek R1 8B", hint: "reasoning, 8B params" },
   { value: "deepseek-r1:14b", label: "DeepSeek R1 14B", hint: "reasoning, 14B params" },
+  { value: "deepseek-r1:1.5b", label: "DeepSeek R1 1.5B", hint: "reasoning, lightweight" },
   { value: "llama3.3:latest", label: "Llama 3.3", hint: "general purpose" },
   { value: "qwen2.5-coder:7b", label: "Qwen 2.5 Coder 7B", hint: "code-focused" },
   { value: "qwen2.5-coder:14b", label: "Qwen 2.5 Coder 14B", hint: "code-focused, larger" },
   { value: "codellama:latest", label: "Code Llama", hint: "code generation" },
   { value: "mistral:latest", label: "Mistral", hint: "general purpose" },
-  { value: "kimi-k2.5:cloud", label: "Kimi K2.5 (Cloud)", hint: "cloud model via Ollama" },
 ];
 
 /**
@@ -42,7 +44,8 @@ export async function fetchOllamaModels(apiBase: string): Promise<OllamaModel[] 
     });
     if (!response.ok) return null;
     const data = (await response.json()) as OllamaTagsResponse;
-    return data.models ?? [];
+    // Filter out cloud/remote models — they require external API keys
+    return (data.models ?? []).filter((m) => !m.remote_host && !m.remote_model);
   } catch {
     return null;
   }
