@@ -43,6 +43,7 @@ import {
   setGeminiApiKey,
   setKimiCodeApiKey,
   setMoonshotApiKey,
+  setOllamaApiKey,
   setOpencodeZenApiKey,
   setOpenrouterApiKey,
   setSyntheticApiKey,
@@ -740,6 +741,9 @@ export async function applyAuthChoiceApiProviders(
     }
 
     const modelRef = `ollama/${selectedModelName}`;
+
+    // Save auth profile so implicit provider discovery finds Ollama at startup
+    await setOllamaApiKey("ollama", params.agentDir);
 
     nextConfig = {
       ...nextConfig,
