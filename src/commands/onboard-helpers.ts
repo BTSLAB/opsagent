@@ -26,6 +26,7 @@ import {
   sleep,
 } from "../utils.js";
 import { VERSION } from "../version.js";
+import { formatCliBannerArt } from "../cli/banner.js";
 import type { NodeManagerChoice, OnboardMode, ResetScope } from "./onboard-types.js";
 
 export function guardCancel<T>(value: T | symbol, runtime: RuntimeEnv): T {
@@ -63,16 +64,7 @@ export function randomToken(): string {
 }
 
 export function printWizardHeader(runtime: RuntimeEnv) {
-  const header = [
-    "░████░████░░░████░░█████░░████░█████░███░░█████░",
-    "█░░░█░█░░░█░█░░░░░█░░░█░█░░░░░█░░░░░█░░█░░░█░░",
-    "█░░░█░████░░░████░░█████░█░░██░████░░█░░█░░░█░░",
-    "█░░░█░█░░░░░░░░░█░░█░░░█░█░░░█░█░░░░░█░░█░░░█░░",
-    "░████░█░░░░░████░░░█░░░█░░████░░█████░███░░░░█░░",
-    "           AI Operations Assistant",
-    "  Created by Reginald Pierre — Business Technology Systems",
-  ].join("\n");
-  runtime.log(header);
+  runtime.log(formatCliBannerArt());
 }
 
 export function applyWizardMetadata(
