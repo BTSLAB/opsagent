@@ -3,7 +3,7 @@
 OpsAgent Changelog — BTS Labs
 
 ## 2026.1.25
-Status: unreleased.
+Released: 2026-01-30.
 
 ### Changes
 - Gateway: warn on hook tokens via query params; document header auth preference. (#2200) Thanks @YuriNachos.

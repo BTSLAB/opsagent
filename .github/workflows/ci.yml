@@ -89,6 +89,9 @@ jobs:
           - runtime: bun
             task: test
             command: bunx vitest run
+          - runtime: node
+            task: e2e
+            command: pnpm test:e2e
           - runtime: bun
             task: build
             command: bunx tsc -p tsconfig.json

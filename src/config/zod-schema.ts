@@ -351,6 +351,13 @@ export const OpsAgentSchema = z
           })
           .strict()
           .optional(),
+        rateLimit: z
+          .object({
+            windowMs: z.number().int().positive().optional(),
+            maxRequests: z.number().int().positive().optional(),
+          })
+          .strict()
+          .optional(),
         reload: z
           .object({
             mode: z

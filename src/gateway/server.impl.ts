@@ -14,6 +14,7 @@ import {
   writeConfigFile,
 } from "../config/config.js";
 import { isDiagnosticsEnabled } from "../infra/diagnostic-events.js";
+import { initOtel, type OtelHandle } from "../infra/otel.js";
 import { logAcceptedEnvOption } from "../infra/env.js";
 import { applyPluginAutoEnable } from "../config/plugin-auto-enable.js";
 import { clearAgentRunContext, onAgentEvent } from "../infra/agent-events.js";
@@ -49,6 +50,7 @@ import type { startBrowserControlServerIfEnabled } from "./server-browser.js";
 import { createChannelManager } from "./server-channels.js";
 import { createAgentEventHandler } from "./server-chat.js";
 import { createGatewayCloseHandler } from "./server-close.js";
+import { runStartupPreflight } from "./startup-preflight.js";
 import { buildGatewayCronService } from "./server-cron.js";
 import { applyGatewayLaneConcurrency } from "./server-lanes.js";
 import { startGatewayMaintenanceTimers } from "./server-maintenance.js";
@@ -210,6 +212,16 @@ export async function startGatewayServer(
   }
 
   const cfgAtStart = loadConfig();
+
+  const preflight = runStartupPreflight(cfgAtStart);
+  if (!preflight.ok) {
+    for (const warning of preflight.warnings) {
+      log.warn(`preflight: ${warning}`);
+    }
+  }
+
+  const otelHandle: OtelHandle = await initOtel(cfgAtStart.diagnostics?.otel);
+
   const diagnosticsEnabled = isDiagnosticsEnabled(cfgAtStart);
   if (diagnosticsEnabled) {
     startDiagnosticHeartbeat();
@@ -580,6 +592,7 @@ export async function startGatewayServer(
       }
       skillsChangeUnsub();
       await close(opts);
+      await otelHandle.shutdown();
     },
   };
 }

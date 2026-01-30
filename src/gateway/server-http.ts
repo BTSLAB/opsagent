@@ -7,6 +7,7 @@ import {
 import { createServer as createHttpsServer } from "node:https";
 import type { TlsOptions } from "node:tls";
 import type { WebSocketServer } from "ws";
+import { createRateLimiter } from "./rate-limit.js";
 import { handleA2uiHttpRequest } from "../canvas-host/a2ui.js";
 import type { CanvasHostHandler } from "../canvas-host/server.js";
 import { loadConfig } from "../config/config.js";
@@ -211,6 +212,10 @@ export function createGatewayHttpServer(opts: {
   handlePluginRequest?: HooksRequestHandler;
   resolvedAuth: import("./auth.js").ResolvedGatewayAuth;
   tlsOptions?: TlsOptions;
+  /** Rate limit window in ms. Default: 10000. */
+  rateLimitWindowMs?: number;
+  /** Max requests per window per IP. Default: 100. */
+  rateLimitMaxRequests?: number;
 }): HttpServer {
   const {
     canvasHost,
@@ -223,6 +228,12 @@ export function createGatewayHttpServer(opts: {
     handlePluginRequest,
     resolvedAuth,
   } = opts;
+
+  const rateLimiter = createRateLimiter({
+    windowMs: opts.rateLimitWindowMs ?? 10_000,
+    maxRequests: opts.rateLimitMaxRequests ?? 100,
+  });
+
   const httpServer: HttpServer = opts.tlsOptions
     ? createHttpsServer(opts.tlsOptions, (req, res) => {
         void handleRequest(req, res);
@@ -234,6 +245,15 @@ export function createGatewayHttpServer(opts: {
   async function handleRequest(req: IncomingMessage, res: ServerResponse) {
     // Don't interfere with WebSocket upgrades; ws handles the 'upgrade' event.
     if (String(req.headers.upgrade ?? "").toLowerCase() === "websocket") return;
+
+    const clientIp = req.socket.remoteAddress ?? "unknown";
+    if (!rateLimiter.allow(clientIp)) {
+      res.statusCode = 429;
+      res.setHeader("Retry-After", "10");
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      res.end("Too Many Requests");
+      return;
+    }
 
     try {
       const configSnapshot = loadConfig();

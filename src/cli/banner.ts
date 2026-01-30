@@ -69,7 +69,7 @@ const LOBSTER_ASCII = [
   "█░░░█░█░░░░░░░░░█░░█░░░█░█░░░█░█░░░░░█░░█░░░█░░",
   "░████░█░░░░░████░░░█░░░█░░████░░█████░███░░░░█░░",
   "           AI Operations Assistant",
-  "  Created by Reginald Pierre — Business Technology Systems",
+  "        Created by Reginald Pierre \u2014 BTS Labs R&D Division of Business Technology Systems",
 ];
 
 export function formatCliBannerArt(options: BannerOptions = {}): string {
@@ -85,10 +85,7 @@ export function formatCliBannerArt(options: BannerOptions = {}): string {
 
   const colored = LOBSTER_ASCII.map((line) => {
     if (line.includes("AI Operations Assistant")) {
-      return (
-        theme.muted("           ") +
-        theme.info("AI Operations Assistant")
-      );
+      return theme.muted("           ") + theme.info("AI Operations Assistant");
     }
     if (line.includes("Created by")) {
       return theme.muted(line);

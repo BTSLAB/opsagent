@@ -203,6 +203,13 @@ export type GatewayNodesConfig = {
   denyCommands?: string[];
 };
 
+export type GatewayRateLimitConfig = {
+  /** Rate limit window in ms (default: 10000). */
+  windowMs?: number;
+  /** Max HTTP requests per window per IP (default: 100). */
+  maxRequests?: number;
+};
+
 export type GatewayConfig = {
   /** Single multiplexed port for Gateway WS + HTTP (default: 18789). */
   port?: number;
@@ -225,6 +232,8 @@ export type GatewayConfig = {
   customBindHost?: string;
   controlUi?: GatewayControlUiConfig;
   auth?: GatewayAuthConfig;
+  /** HTTP rate limiting per IP (default: 100 req / 10s). */
+  rateLimit?: GatewayRateLimitConfig;
   tailscale?: GatewayTailscaleConfig;
   remote?: GatewayRemoteConfig;
   reload?: GatewayReloadConfig;
